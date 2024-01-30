@@ -27,6 +27,8 @@ function iniciarJuego() {
     }
 }
 
+console.log();
+
 function realizarMovimiento(fila, columna) {
     if (arrayJuego[fila][columna] == 0) {
         movimientosRealizados++;
