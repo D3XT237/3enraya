@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3 en raya</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1 align="center">3 EN RAYA</h1>
+    <div class="opciones">
+        <div class="modo">
+            <p>Modo:</p>
+            <button class="numFichas nopulsado" id="9fichas" onclick="elegirNumFichas(1, '9fichas')">9 fichas</button>
+            <button class="numFichas nopulsado" id="6fichas" onclick="elegirNumFichas(2, '6fichas')">6 fichas</button>
+        </div>
+        <div class="jugadores">
+            <p>Jugadores:</p>
+            <button class='modoJuego nopulsado' id="1vsAleatorio" onclick="elegirModoJuego(1, '1vsAleatorio')">1 vs Aleatorio</button>
+            <button class='modoJuego nopulsado' id="1vsIA" onclick="elegirModoJuego(2, '1vsIA')">1 vs IA</button>
+            <button class='modoJuego nopulsado' id="2jugadores" onclick="elegirModoJuego(3, '2jugadores')">2 jugadores</button>
+        </div>
+    </div>
+    <div class="comenzarJuego">
+        <button class="iniciarJuego" onclick="iniciarJuego()">Comenzar partida</button>
+    </div>
+    <div class="contenedorJuego">
+        
+        <div class="tiempo"></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+h1{
+    text-align: center;
+}
+
+.opciones{
+    display: flex;
+    width: 100%;
+    height: auto;
+}
+
+.modo, .jugadores{
+    display: flex;
+    width: 50%;
+    height: auto;
+    align-items: center;
+    justify-content: center;
+}
+
+button{
+    height: 3vh;
+    width: auto;
+    margin-left: 1vh;
+}
+
+.contenedorJuego{
+    display: flex;
+    width: 100%;
+    height: auto;
+}
+
+.comenzarJuego{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.nopulsado{
+    background-color: aqua;
+}
+
+.pulsado{
+    background-color: red;
+}
+
+#tablero{
+    display: flex;
+    width: 50%;
+    height: auto;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10vh;    
+}
+
+.tiempo{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    height: auto;
+    justify-content: center;
+    align-items: center;
+}
+
+.botonTablero {
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+}
+
+td:hover {
+    background-color: rgb(66, 66, 66);
+}
+
+.tablaJuego td {
+    border: 1px solid black;
+    height: 15vh;
+    width: 15vh;
+    padding: 0;
+    overflow: hidden;
+}
