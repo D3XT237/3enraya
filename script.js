@@ -5,6 +5,7 @@ let numFichasPartida = 0;
 let modoJuegoPartida = 0;
 let fichasJugador1 = 0;
 let fichasJugador2 = 0;
+let anteriorPosicion = "";
 
 /*
 Crea la tabla con los botones e inicia el juego con la configuración indicada
@@ -20,7 +21,7 @@ function iniciarJuego() {
         for (let fila = 0; fila < 3; fila++) {
             tabla += "<tr>";
             for (let columna = 0; columna < 3; columna++) {
-                tabla += "<td><button class='botonTablero' id='fila" + fila + "columna" + columna + "' onclick='realizarMovimiento(" + fila + "," + columna + ", event)'></button></td>";
+                tabla += "<td><button class='botonTablero' id='fila" + fila + "columna" + columna + "' onclick='realizarMovimiento(" + fila + "," + columna + ")'></button></td>";
             }
             tabla += "</tr>";
         }
@@ -33,7 +34,6 @@ function iniciarJuego() {
 /*
 Comprueba el número de fichas y llama a la función en consecuencia
 */
-
 function realizarMovimiento(fila, columna) {
     if (numFichasPartida == 2) {
         realizarMovimiento6fichas(fila, columna);
@@ -41,35 +41,11 @@ function realizarMovimiento(fila, columna) {
         realizarMovimiento9fichas(fila, columna);
     }
 }
-
-
-function realizarMovimiento6fichas(fila, columna) {
-    if (arrayJuego[fila][columna] == 0) {
-        if (fichasJugadorActual() < 3) {
-            sumarFichaJugador();
-            movimientosRealizados++;
-            arrayJuego[fila][columna] = jugadorActual;
-            cambiarBoton(fila, columna, jugadorActual);
-
-            if (verificarGanador()) {
-                alert("¡Jugador " + jugadorActual + " ha ganado!");
-                reiniciarJuego();
-            } else if (modoJuegoPartida == 1 && movimientosRealizados == 9) {
-                alert("¡Empate!");
-                reiniciarJuego();
-            } else {
-                cambiarTurno();
-            }
-        } else {
-            alert("Tienes 3 fichas. Debes quitar una antes de colocar una nueva.");
-        }
-    } else if (arrayJuego[fila][columna] == jugadorActual && fichasJugadorActual() == 3) {
-        restarFichaJugador();
-        arrayJuego[fila][columna] = 0;
-        cambiarBoton(fila, columna, 0);
-    }
-}
-
+/*
+La función comprueba si la casilla que ha sido clickada se encuentra libre. Si lo está, suma 1 al contador de movimientos y el jugador actual 
+ocupa esa casilla. Luego cambia el botón para mostrar el jugador que tiene esa casilla. Finalmente verifica si hay un ganador, un empate y finalmente 
+si no se cumple nada de esto, cambia turno
+*/
 function realizarMovimiento9fichas(fila, columna) {
     if (arrayJuego[fila][columna] == 0) {
         movimientosRealizados++;
@@ -83,22 +59,101 @@ function realizarMovimiento9fichas(fila, columna) {
             alert("¡Empate!");
             reiniciarJuego();
         } else {
-            switch (jugadorActual) {
-                case 1:
-                    jugadorActual = 2;
-                    break;
-                case 2:
-                    jugadorActual = 1;
-                    break;
+            cambiarTurno();
+            if (jugadorActual == 2) {
+                switch (modoJuegoPartida) {
+                    case 1:
+                        vsAleatorio();
+                        break;
+                    case 2:
+                        vsIA();
+                        break;
+                    default:
+                        break;
+                }
             }
         }
     }
 }
 
-function quitarFicha(fila, columna) {
 
+/*
+Comprueba el número de fichas del jugador actual. Si es menor que 3 y no está jugando de nuevo en la misma posición, funciona igual que 
+realizarMovimiento9fichas. Si no, avisa de que el jugador tiene 3 fichas y que debe quitar una ficha antes. Si el jugador tiene 3 fichas y 
+clicka en una casilla donde está una de sus fichas, la retira devolviendo su valor inicial y resta una ficha de su contador para que la pueda 
+jugar a continuación
+*/
+function realizarMovimiento6fichas(fila, columna) {
+    if (arrayJuego[fila][columna] == 0) {
+        if (fichasJugadorActual() < 3 && anteriorPosicion != document.getElementById("fila" + fila + "columna" + columna)) {
+            sumarFichaJugador();
+            movimientosRealizados++;
+            arrayJuego[fila][columna] = jugadorActual;
+            cambiarBoton(fila, columna, jugadorActual);
+
+            if (verificarGanador()) {
+                alert("¡Jugador " + jugadorActual + " ha ganado!");
+                reiniciarJuego();
+            } else {
+                cambiarTurno();
+                if (jugadorActual == 2) {
+                    switch (modoJuegoPartida) {
+                        case 1:
+                            vsAleatorio();
+                            break;
+                        case 2:
+                            vsIA();
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+        } else {
+            alert("Tienes 3 fichas o estas jugando la ficha en la misma posición");
+        }
+    } else if (arrayJuego[fila][columna] == jugadorActual && fichasJugadorActual() == 3) {
+        anteriorPosicion = document.getElementById("fila" + fila + "columna" + columna);
+        restarFichaJugador();
+        arrayJuego[fila][columna] = 0;
+        cambiarBoton(fila, columna, 0);
+    }
 }
 
+/*
+Elige una fila y una columna random. Si las fichas son menor que 3 (en 9 fichas siempre va a ser menor) busca una posición hasta que encuentre una
+libre y una vez encontrada realiza el movimiento. En caso de jugar en modo de 6 fichas, es igual a 9 fichas hasta que la IA tiene 3 fichas. Entonces
+busca una posición en la que ya tenga ficha. Una vez la encuentra le resta una ficha, vacia esa casilla y vuelve a ejecutarse la función de forma
+recursiva. Esta vez tiene 2 fichas por lo que pondrá una ficha.
+*/
+function vsAleatorio() {
+    let filaRandom = Math.floor(Math.random() * 3);
+    let columnaRandom = Math.floor(Math.random() * 3);
+
+    if (fichasJugador2 < 3) {
+        while (arrayJuego[filaRandom][columnaRandom] != 0) {
+            filaRandom = Math.floor(Math.random() * 3);
+            columnaRandom = Math.floor(Math.random() * 3);
+        }
+
+        realizarMovimiento(filaRandom, columnaRandom);
+    } else {
+        let filaRandom = Math.floor(Math.random() * 3);
+        let columnaRandom = Math.floor(Math.random() * 3);
+
+        while (arrayJuego[filaRandom][columnaRandom] != 2) {
+            filaRandom = Math.floor(Math.random() * 3);
+            columnaRandom = Math.floor(Math.random() * 3);
+
+        }
+
+        restarFichaJugador();
+        arrayJuego[filaRandom][columnaRandom] = 0;
+        cambiarBoton(filaRandom, columnaRandom, 0);
+
+        vsAleatorio();
+    }
+}
 /*
 Recibe los párametros de la posición a cambiar y el jugador que toma la posición y cambia lo que muestra el botón
 */
@@ -144,6 +199,8 @@ function reiniciarJuego() {
     arrayJuego = Array.from({ length: 3 }, () => Array(3).fill(0));
     jugadorActual = 1;
     movimientosRealizados = 0;
+    fichasJugador1 = 0;
+    fichasJugador2 = 0;
     iniciarJuego();
 }
 
