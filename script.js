@@ -131,7 +131,7 @@ function vsAleatorio() {
     let columnaRandom = Math.floor(Math.random() * 3);
 
     if (fichasJugador2 < 3) {
-        while (arrayJuego[filaRandom][columnaRandom] != 0) {
+        while (arrayJuego[filaRandom][columnaRandom] != 0 || document.getElementById("fila" + filaRandom + "columna" + columnaRandom) == anteriorPosicion) {
             filaRandom = Math.floor(Math.random() * 3);
             columnaRandom = Math.floor(Math.random() * 3);
         }
@@ -146,7 +146,7 @@ function vsAleatorio() {
             columnaRandom = Math.floor(Math.random() * 3);
 
         }
-
+        anteriorPosicion = document.getElementById("fila" + filaRandom + "columna" + columnaRandom);
         restarFichaJugador();
         arrayJuego[filaRandom][columnaRandom] = 0;
         cambiarBoton(filaRandom, columnaRandom, 0);
