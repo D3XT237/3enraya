@@ -13,6 +13,8 @@ let filaRandomIA = "";
 let columnaRandomIA = "";
 let contador = 0;
 let intervalo;
+let intervaloJugada;
+let segundosTurno;
 
 /*
 Crea la tabla con los botones e inicia el juego con la configuración indicada
@@ -44,6 +46,7 @@ Comprueba el número de fichas y llama a la función en consecuencia
 */
 function realizarMovimiento(fila, columna) {
     borrarMensaje();
+    contadorJugador();
     if (numFichasPartida == 2) {
         realizarMovimiento6fichas(fila, columna);
     } else {
@@ -65,8 +68,10 @@ function realizarMovimiento9fichas(fila, columna) {
 
         if (verificarGanador()) {
             cambiarMensajeJugador("¡Jugador " + jugadorActual + " ha ganado!");
+            bloquearBotones();
         } else if (modoJuegoPartida == 1 && movimientosRealizados == 9) {
             cambiarMensajeJugador("¡Empate!");
+            bloquearBotones();
         } else {
             cambiarTurno();
             if (jugadorActual == 2) {
@@ -104,6 +109,7 @@ function realizarMovimiento6fichas(fila, columna) {
 
             if (verificarGanador()) {
                 cambiarMensajeJugador("¡Jugador " + jugadorActual + " ha ganado!");
+                bloquearBotones();
             } else {
                 cambiarTurno();
                 if (jugadorActual == 2) {
@@ -192,7 +198,7 @@ function verificarGanador() {
             (arrayJuego[i][0] === jugadorActual && arrayJuego[i][1] === jugadorActual && arrayJuego[i][2] === jugadorActual) ||
             (arrayJuego[0][i] === jugadorActual && arrayJuego[1][i] === jugadorActual && arrayJuego[2][i] === jugadorActual)
         ) {
-            pararContador();
+            pararContadores();
             return true;
         }
     }
@@ -201,12 +207,17 @@ function verificarGanador() {
         (arrayJuego[0][0] === jugadorActual && arrayJuego[1][1] === jugadorActual && arrayJuego[2][2] === jugadorActual) ||
         (arrayJuego[0][2] === jugadorActual && arrayJuego[1][1] === jugadorActual && arrayJuego[2][0] === jugadorActual)
     ) {
-        pararContador();
+        pararContadores();
         return true;
 
     }
 
     return false;
+}
+
+function perderPartida() {
+    cambiarMensajeJugador("Jugador " + jugadorActual + " se ha quedado sin tiempo. Partida perdida");
+    bloquearBotones;
 }
 
 /*
@@ -215,6 +226,7 @@ Devuelve todos los parámetros a como están al principio e inicia de nuevo la p
 function reiniciarJuego() {
     borrarMensaje();
     iniciarContador();
+    contadorJugador();
     arrayJuego = Array.from({ length: 3 }, () => Array(3).fill(0));
     jugadorActual = 1;
     movimientosRealizados = 0;
@@ -365,8 +377,18 @@ function borrarMensaje() {
     document.getElementById('textoMensaje').innerHTML = "";
 }
 
+function bloquearBotones() {
+    let botones = document.querySelectorAll('.botonTablero');
+    botones.forEach(boton => {
+        boton.disabled = true;
+    });
+}
+
+
 function iniciarContador() {
     let segundos = 0;
+
+    document.getElementById('contadorTotal').innerHTML = "Tiempo de juego: " + segundos;
     intervalo = setInterval(() => {
         segundos++;
         let minutos = Math.floor(segundos / 60);
@@ -380,7 +402,31 @@ function iniciarContador() {
     return intervalo;
 }
 
+function contadorJugador() {
+    segundosTurno = 30;
+    document.getElementById('contadorJugada').innerHTML = "Tiempo restante de jugada: " + segundosTurno + "s";
+
+    clearInterval(intervaloJugada);
+
+    intervaloJugada = setInterval(() => {
+        segundosTurno--;
+        document.getElementById('contadorJugada').innerHTML = "Tiempo restante de jugada: " + segundosTurno + "s";
+        if (segundosTurno == 0) {
+            perderPartida();
+        }
+    }, 1000);
+}
+
+function pararContadores() {
+    pararContador();
+    pararContadorJugador();
+}
+
+
 function pararContador() {
     clearInterval(intervalo);
 }
 
+function pararContadorJugador() {
+    clearInterval(intervaloJugada);
+}
