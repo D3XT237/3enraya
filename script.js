@@ -11,6 +11,8 @@ let anteriorPosicion = "";
 let anteriorPosicionIA = "";
 let filaRandomIA = "";
 let columnaRandomIA = "";
+let contador = 0;
+let intervalo;
 
 /*
 Crea la tabla con los botones e inicia el juego con la configuración indicada
@@ -190,6 +192,7 @@ function verificarGanador() {
             (arrayJuego[i][0] === jugadorActual && arrayJuego[i][1] === jugadorActual && arrayJuego[i][2] === jugadorActual) ||
             (arrayJuego[0][i] === jugadorActual && arrayJuego[1][i] === jugadorActual && arrayJuego[2][i] === jugadorActual)
         ) {
+            pararContador();
             return true;
         }
     }
@@ -198,7 +201,9 @@ function verificarGanador() {
         (arrayJuego[0][0] === jugadorActual && arrayJuego[1][1] === jugadorActual && arrayJuego[2][2] === jugadorActual) ||
         (arrayJuego[0][2] === jugadorActual && arrayJuego[1][1] === jugadorActual && arrayJuego[2][0] === jugadorActual)
     ) {
+        pararContador();
         return true;
+
     }
 
     return false;
@@ -209,6 +214,7 @@ Devuelve todos los parámetros a como están al principio e inicia de nuevo la p
 */
 function reiniciarJuego() {
     borrarMensaje();
+    iniciarContador();
     arrayJuego = Array.from({ length: 3 }, () => Array(3).fill(0));
     jugadorActual = 1;
     movimientosRealizados = 0;
@@ -293,7 +299,7 @@ function eliminarPosicionLibre(fila, columna) {
     let indice = -1;
     arrayPosicionesLibres.forEach((casilla, indiceCasilla) => {
         if (casilla[0] == fila && casilla[1] == columna) {
-            indice = indiceCasilla; 
+            indice = indiceCasilla;
         }
     });
 
@@ -352,9 +358,29 @@ function cambiarTurno() {
 }
 
 function cambiarMensajeJugador(texto) {
-    document.getElementById('mensajesJugador').innerHTML = texto;
+    document.getElementById('textoMensaje').innerHTML = texto;
 }
 
 function borrarMensaje() {
-    document.getElementById('mensajesJugador').innerHTML = "";
+    document.getElementById('textoMensaje').innerHTML = "";
 }
+
+function iniciarContador() {
+    let segundos = 0;
+    intervalo = setInterval(() => {
+        segundos++;
+        let minutos = Math.floor(segundos / 60);
+        let segundosRestantes = segundos % 60;
+        if (minutos != 0) {
+            document.getElementById('contadorTotal').innerHTML = "Tiempo de juego: " + minutos + "min " + segundosRestantes + "s";
+        } else {
+            document.getElementById('contadorTotal').innerHTML = "Tiempo de juego: " + segundosRestantes + "s";
+        }
+    }, 1000);
+    return intervalo;
+}
+
+function pararContador() {
+    clearInterval(intervalo);
+}
+
