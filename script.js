@@ -8,6 +8,7 @@ let fichasJugador2 = 0;
 let arrayPosicionesLibres = [[0, 0], [0, 1], [0, 2], [1, 0], [1, 1], [1, 2], [2, 0], [2, 1], [2, 2]];
 let arrayPosicionesIA = [];
 let anteriorPosicion = "";
+let anteriorPosicionIA = "";
 
 /*
 Crea la tabla con los botones e inicia el juego con la configuración indicada
@@ -95,6 +96,7 @@ function realizarMovimiento6fichas(fila, columna) {
             arrayJuego[fila][columna] = jugadorActual;
             cambiarBoton(fila, columna, jugadorActual);
             eliminarPosicionLibre(fila, columna);
+            anteriorPosicion = "";
 
             if (verificarGanador()) {
                 cambiarMensajeJugador("¡Jugador " + jugadorActual + " ha ganado!");
@@ -128,7 +130,8 @@ function realizarMovimiento6fichas(fila, columna) {
 /*
 Elige una fila y una columna random. Si las fichas son menor que 3 (en 9 fichas siempre va a ser menor) busca una posición hasta que encuentre una
 libre y una vez encontrada realiza el movimiento. En caso de jugar en modo de 6 fichas, es igual a 9 fichas hasta que la IA tiene 3 fichas. Entonces
-busca una de las posiciones que tiene en su poder, la elimina
+busca una de las posiciones que tiene en su poder, la elimina, se resta una ficha e inicia de manera recursiva la función otra vez. Al tener una ficha menos
+ahora buscará una nueva posición distinta de la que acaba de eliminar
 */
 function vsAleatorio() {
 
@@ -151,6 +154,7 @@ function vsAleatorio() {
         restarFichaJugador();
         arrayPosicionesIA.splice(indiceAleatorioIA, 1);
         arrayJuego[filaRandomIA][columnaRandomIA] = 0;
+        anteriorPosicionIA = document.getElementById("fila" + filaRandomIA + "columna" + columnaRandomIA);
         cambiarBoton(filaRandomIA, columnaRandomIA, 0);
 
         vsAleatorio();
