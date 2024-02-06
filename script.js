@@ -5,16 +5,19 @@ let numFichasPartida = 0;
 let modoJuegoPartida = 0;
 let fichasJugador1 = 0;
 let fichasJugador2 = 0;
+let arrayPosicionesLibres = [[0, 0], [0, 1], [0, 2], [1, 0], [1, 1], [1, 2], [2, 0], [2, 1], [2, 2]];
+let arrayPosicionesIA = [];
 let anteriorPosicion = "";
 
 /*
 Crea la tabla con los botones e inicia el juego con la configuración indicada
 */
 function iniciarJuego() {
+    reiniciarJuego();
     if (numFichasPartida == 0) {
-        alert("Seleccione número de fichas");
+        cambiarMensajeJugador("Seleccione número de fichas");
     } else if (modoJuegoPartida == 0) {
-        alert("Seleccione un modo de juego");
+        cambiarMensajeJugador("Seleccione un modo de juego");
     } else {
         let tabla = "<table class='tablaJuego'>";
 
@@ -35,11 +38,13 @@ function iniciarJuego() {
 Comprueba el número de fichas y llama a la función en consecuencia
 */
 function realizarMovimiento(fila, columna) {
+    borrarMensaje();
     if (numFichasPartida == 2) {
         realizarMovimiento6fichas(fila, columna);
     } else {
         realizarMovimiento9fichas(fila, columna);
     }
+    mostrarMensajeJugador();
 }
 /*
 La función comprueba si la casilla que ha sido clickada se encuentra libre. Si lo está, suma 1 al contador de movimientos y el jugador actual 
@@ -50,14 +55,13 @@ function realizarMovimiento9fichas(fila, columna) {
     if (arrayJuego[fila][columna] == 0) {
         movimientosRealizados++;
         arrayJuego[fila][columna] = jugadorActual;
+        eliminarPosicionLibre(fila, columna);
         cambiarBoton(fila, columna, jugadorActual);
 
         if (verificarGanador()) {
-            alert("¡Jugador " + jugadorActual + " ha ganado!");
-            reiniciarJuego();
+            cambiarMensajeJugador("¡Jugador " + jugadorActual + " ha ganado!");
         } else if (modoJuegoPartida == 1 && movimientosRealizados == 9) {
-            alert("¡Empate!");
-            reiniciarJuego();
+            cambiarMensajeJugador("¡Empate!");
         } else {
             cambiarTurno();
             if (jugadorActual == 2) {
@@ -90,10 +94,10 @@ function realizarMovimiento6fichas(fila, columna) {
             movimientosRealizados++;
             arrayJuego[fila][columna] = jugadorActual;
             cambiarBoton(fila, columna, jugadorActual);
+            eliminarPosicionLibre(fila, columna);
 
             if (verificarGanador()) {
-                alert("¡Jugador " + jugadorActual + " ha ganado!");
-                reiniciarJuego();
+                cambiarMensajeJugador("¡Jugador " + jugadorActual + " ha ganado!");
             } else {
                 cambiarTurno();
                 if (jugadorActual == 2) {
@@ -110,11 +114,12 @@ function realizarMovimiento6fichas(fila, columna) {
                 }
             }
         } else {
-            alert("Tienes 3 fichas o estas jugando la ficha en la misma posición");
+            cambiarMensajeJugador("Tienes 3 fichas o estas jugando la ficha en la misma posición");
         }
     } else if (arrayJuego[fila][columna] == jugadorActual && fichasJugadorActual() == 3) {
         anteriorPosicion = document.getElementById("fila" + fila + "columna" + columna);
         restarFichaJugador();
+        arrayPosicionesLibres.push([fila][columna]);
         arrayJuego[fila][columna] = 0;
         cambiarBoton(fila, columna, 0);
     }
@@ -123,33 +128,30 @@ function realizarMovimiento6fichas(fila, columna) {
 /*
 Elige una fila y una columna random. Si las fichas son menor que 3 (en 9 fichas siempre va a ser menor) busca una posición hasta que encuentre una
 libre y una vez encontrada realiza el movimiento. En caso de jugar en modo de 6 fichas, es igual a 9 fichas hasta que la IA tiene 3 fichas. Entonces
-busca una posición en la que ya tenga ficha. Una vez la encuentra le resta una ficha, vacia esa casilla y vuelve a ejecutarse la función de forma
-recursiva. Esta vez tiene 2 fichas por lo que pondrá una ficha.
+busca una de las posiciones que tiene en su poder, la elimina
 */
 function vsAleatorio() {
-    let filaRandom = Math.floor(Math.random() * 3);
-    let columnaRandom = Math.floor(Math.random() * 3);
 
     if (fichasJugador2 < 3) {
-        while (arrayJuego[filaRandom][columnaRandom] != 0 || document.getElementById("fila" + filaRandom + "columna" + columnaRandom) == anteriorPosicion) {
-            filaRandom = Math.floor(Math.random() * 3);
-            columnaRandom = Math.floor(Math.random() * 3);
-        }
+        let indiceAleatorio = Math.floor(Math.random() * arrayPosicionesLibres.length);
+        let posicionAleatoria = arrayPosicionesLibres[indiceAleatorio];
 
+        let filaRandom = posicionAleatoria[0];
+        let columnaRandom = posicionAleatoria[1];
+
+        arrayPosicionesIA.push([filaRandom,columnaRandom]);
         realizarMovimiento(filaRandom, columnaRandom);
     } else {
-        let filaRandom = Math.floor(Math.random() * 3);
-        let columnaRandom = Math.floor(Math.random() * 3);
+        let indiceAleatorioIA = Math.floor(Math.random() * arrayPosicionesIA.length);
+        let posicionAleatoriaIA = arrayPosicionesIA[indiceAleatorioIA];
 
-        while (arrayJuego[filaRandom][columnaRandom] != 2) {
-            filaRandom = Math.floor(Math.random() * 3);
-            columnaRandom = Math.floor(Math.random() * 3);
+        let filaRandomIA = posicionAleatoriaIA[0];
+        let columnaRandomIA = posicionAleatoriaIA[1];
 
-        }
-        anteriorPosicion = document.getElementById("fila" + filaRandom + "columna" + columnaRandom);
         restarFichaJugador();
-        arrayJuego[filaRandom][columnaRandom] = 0;
-        cambiarBoton(filaRandom, columnaRandom, 0);
+        arrayPosicionesIA.splice(indiceAleatorioIA, 1);
+        arrayJuego[filaRandomIA][columnaRandomIA] = 0;
+        cambiarBoton(filaRandomIA, columnaRandomIA, 0);
 
         vsAleatorio();
     }
@@ -196,18 +198,20 @@ function verificarGanador() {
 Devuelve todos los parámetros a como están al principio e inicia de nuevo la partida
 */
 function reiniciarJuego() {
+    borrarMensaje();
     arrayJuego = Array.from({ length: 3 }, () => Array(3).fill(0));
     jugadorActual = 1;
     movimientosRealizados = 0;
     fichasJugador1 = 0;
     fichasJugador2 = 0;
-    iniciarJuego();
+    arrayPosicionesLibres = [[0, 0], [0, 1], [0, 2], [1, 0], [1, 1], [1, 2], [2, 0], [2, 1], [2, 2]];
 }
 
 /*
 Cambia el color del botón seleccionado y asigna el número de fichas que indica el botón
 */
 function elegirNumFichas(numFichas, id) {
+    borrarMensaje();
     cambiarColorBotonFichas(id);
     numFichasPartida = numFichas;
 }
@@ -216,6 +220,7 @@ function elegirNumFichas(numFichas, id) {
 Cambia el color del botón seleccionado y asigna modo de juego que indica el botón
 */
 function elegirModoJuego(modoJuego, id) {
+    borrarMensaje();
     cambiarColorBotonModo(id);
     modoJuegoPartida = modoJuego;
 }
@@ -272,6 +277,15 @@ function cambiarColorBotonModo(id) {
 }
 
 /*
+Elimina el espacio en el array de posiciones libres
+*/
+function eliminarPosicionLibre(fila, columna) {
+    let coordenada = [fila, columna];
+    let indice = arrayPosicionesLibres.findIndex(coordenada => coordenada[0] == fila && coordenada[1] == columna);
+    arrayPosicionesLibres.splice(indice, 1);
+}
+
+/*
 Comprueba cual es el jugador actual y devuelve el número de fichas que tiene colocadas
 */
 function fichasJugadorActual() {
@@ -317,4 +331,12 @@ function cambiarTurno() {
             jugadorActual = 1;
             break;
     }
+}
+
+function cambiarMensajeJugador(texto){
+    document.getElementById('mensajesJugador').innerHTML = texto;
+}
+
+function borrarMensaje(){
+    document.getElementById('mensajesJugador').innerHTML = "";
 }
