@@ -52,7 +52,6 @@ function realizarMovimiento(fila, columna) {
     } else {
         realizarMovimiento9fichas(fila, columna);
     }
-    mostrarMensajeJugador();
 }
 /*
 La función comprueba si la casilla que ha sido clickada se encuentra libre. Si lo está, suma 1 al contador de movimientos y el jugador actual 
@@ -217,7 +216,7 @@ function verificarGanador() {
 
 function perderPartida() {
     cambiarMensajeJugador("Jugador " + jugadorActual + " se ha quedado sin tiempo. Partida perdida");
-    bloquearBotones;
+    bloquearBotones();
 }
 
 /*
@@ -403,7 +402,7 @@ function iniciarContador() {
 }
 
 function contadorJugador() {
-    segundosTurno = 30;
+    segundosTurno = 3;
     document.getElementById('contadorJugada').innerHTML = "Tiempo restante de jugada: " + segundosTurno + "s";
 
     clearInterval(intervaloJugada);

@@ -58,7 +58,7 @@ button{
 
 #tablero{
     display: flex;
-    width: 50%;
+    width: 33%;
     height: auto;
     align-items: center;
     justify-content: center;
@@ -68,7 +68,15 @@ button{
 .tiempo{
     display: flex;
     flex-direction: column;
-    width: 50%;
+    width: 33%;
+    height: auto;
+    justify-content: center;
+    align-items: center;
+}
+
+#contadorVictorias{
+    display: flex;
+    width: 33%;
     height: auto;
     justify-content: center;
     align-items: center;
