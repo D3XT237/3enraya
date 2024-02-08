@@ -21,8 +21,9 @@ let empatadas1 = 0;
 let empatadas2 = 0;
 let perdidas1 = 0;
 let perdidas2 = 0;
+let tabla = "<table class='tablaJuego'><tr><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td></tr></table>";
+document.getElementById("tablero").innerHTML = tabla;
 tablaContadorVictorias();
-mostrarTabla();
 /*
 Crea la tabla con los botones e inicia el juego con la configuración indicada
 */
@@ -37,19 +38,19 @@ function iniciarJuego() {
     }
 }
 
-function mostrarTabla(){
-    let tabla = "<table class='tablaJuego'>";
+function mostrarTabla() {
+    tabla = "<table class='tablaJuego'>";
 
-        for (let fila = 0; fila < 3; fila++) {
-            tabla += "<tr>";
-            for (let columna = 0; columna < 3; columna++) {
-                tabla += "<td><button class='botonTablero' id='fila" + fila + "columna" + columna + "' onclick='realizarMovimiento(" + fila + "," + columna + ")'></button></td>";
-            }
-            tabla += "</tr>";
+    for (let fila = 0; fila < 3; fila++) {
+        tabla += "<tr>";
+        for (let columna = 0; columna < 3; columna++) {
+            tabla += "<td><button class='botonTablero' id='fila" + fila + "columna" + columna + "' onclick='realizarMovimiento(" + fila + "," + columna + ")'></button></td>";
         }
+        tabla += "</tr>";
+    }
 
-        tabla += "</table>";
-        document.getElementById("tablero").innerHTML = tabla;
+    tabla += "</table>";
+    document.getElementById("tablero").innerHTML = tabla;
 }
 
 /*
@@ -197,9 +198,9 @@ function cambiarBoton(fila, columna, jugadorActual) {
     let casilla = document.getElementById('fila' + fila + 'columna' + columna);
 
     if (jugadorActual == 1) {
-        casilla.innerHTML = 'X';
+        casilla.innerHTML = "<img src='imagenes/x.png' alt='X' id='imgXO'></img>";
     } else if (jugadorActual == 2) {
-        casilla.innerHTML = 'O';
+        casilla.innerHTML =  "<img src='imagenes/o.png' alt='O' id='imgXO'></img>";
     } else {
         casilla.innerHTML = '';
     }
@@ -259,6 +260,7 @@ function elegirNumFichas(numFichas, id) {
     borrarMensaje();
     cambiarColorBotonFichas(id);
     numFichasPartida = numFichas;
+    reiniciarStatsPartidas();
 }
 
 /*
@@ -268,6 +270,8 @@ function elegirModoJuego(modoJuego, id) {
     borrarMensaje();
     cambiarColorBotonModo(id);
     modoJuegoPartida = modoJuego;
+    pararContadores();
+    reiniciarStatsPartidas();
 }
 
 /*
@@ -433,6 +437,7 @@ function tablaContadorVictorias() {
 }
 
 function iniciarContador() {
+    pararContador();
     let segundos = 0;
 
     document.getElementById('contadorTotal').innerHTML = "Tiempo de juego: " + segundos;
@@ -476,4 +481,14 @@ function pararContador() {
 
 function pararContadorJugador() {
     clearInterval(intervaloJugada);
+}
+
+function reiniciarStatsPartidas() {
+    ganadas1 = 0;
+    ganadas2 = 0;
+    empatadas1 = 0;
+    empatadas2 = 0;
+    perdidas1 = 0;
+    perdidas2 = 0;
+    tablaContadorVictorias();
 }

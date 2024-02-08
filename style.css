@@ -1,14 +1,15 @@
-h1{
+h1 {
     text-align: center;
 }
 
-.opciones{
+.opciones {
     display: flex;
     width: 100%;
     height: auto;
 }
 
-.modo, .jugadores{
+.modo,
+.jugadores {
     display: flex;
     width: 50%;
     height: auto;
@@ -16,13 +17,13 @@ h1{
     justify-content: center;
 }
 
-button{
+button {
     height: 3vh;
     width: auto;
     margin-left: 1vh;
 }
 
-.mensajesJugador{
+.mensajesJugador {
     display: flex;
     width: 100%;
     height: 8vh;
@@ -30,42 +31,42 @@ button{
     justify-content: center;
 }
 
-#textoMensaje{
+#textoMensaje {
     font-size: 3vh;
     font-weight: bold;
 }
 
-.contenedorJuego{
+.contenedorJuego {
     display: flex;
     width: 100%;
     height: auto;
 }
 
-.comenzarJuego{
+.comenzarJuego {
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.nopulsado{
+.nopulsado {
     background-color: aqua;
 }
 
-.pulsado{
+.pulsado {
     background-color: red;
 }
 
-#tablero{
+#tablero {
     display: flex;
     width: 33%;
     height: auto;
     align-items: center;
     justify-content: center;
-    margin-top: 10vh;    
+    margin-top: 10vh;
 }
 
-.tiempo{
+.tiempo {
     display: flex;
     flex-direction: column;
     width: 33%;
@@ -74,7 +75,7 @@ button{
     align-items: center;
 }
 
-#contadorVictorias{
+#contadorVictorias {
     display: flex;
     width: 33%;
     height: auto;
@@ -82,18 +83,19 @@ button{
     align-items: center;
 }
 
-#tablaVictorias{
+#tablaVictorias {
     border: 1px solid black;
     border-collapse: collapse;
     text-align: center;
 }
 
-#tablaVictorias td{
+#tablaVictorias td {
     border: 1px solid black;
     padding: 2vh;
 }
 
-#contadorTotal, #contadorJugada{
+#contadorTotal,
+#contadorJugada {
     display: flex;
     width: 100%;
     height: 50%;
@@ -111,8 +113,12 @@ button{
     background-color: transparent;
 }
 
-td:hover {
+#tablero td:hover {
     background-color: rgb(66, 66, 66);
+}
+
+#imgXO {
+   object-fit: contain;
 }
 
 .tablaJuego td {
