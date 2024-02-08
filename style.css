@@ -82,6 +82,11 @@ button{
     align-items: center;
 }
 
+#tablaVictorias, td{
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
 #contadorTotal, #contadorJugada{
     display: flex;
     width: 100%;
