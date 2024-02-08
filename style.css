@@ -82,9 +82,15 @@ button{
     align-items: center;
 }
 
-#tablaVictorias, td{
+#tablaVictorias{
     border: 1px solid black;
     border-collapse: collapse;
+    text-align: center;
+}
+
+#tablaVictorias td{
+    border: 1px solid black;
+    padding: 2vh;
 }
 
 #contadorTotal, #contadorJugada{

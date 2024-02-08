@@ -21,17 +21,17 @@ let empatadas1 = 0;
 let empatadas2 = 0;
 let perdidas1 = 0;
 let perdidas2 = 0;
-
+tablaContadorVictorias();
 /*
 Crea la tabla con los botones e inicia el juego con la configuración indicada
 */
 function iniciarJuego() {
-    reiniciarJuego();
     if (numFichasPartida == 0) {
         cambiarMensajeJugador("Seleccione número de fichas");
     } else if (modoJuegoPartida == 0) {
         cambiarMensajeJugador("Seleccione un modo de juego");
     } else {
+        reiniciarJuego();
         let tabla = "<table class='tablaJuego'>";
 
         for (let fila = 0; fila < 3; fila++) {
@@ -75,10 +75,12 @@ function realizarMovimiento9fichas(fila, columna) {
             cambiarMensajeJugador("¡Jugador " + jugadorActual + " ha ganado!");
             sumarGanador();
             bloquearBotones();
+            tablaContadorVictorias();
         } else if (modoJuegoPartida == 1 && movimientosRealizados == 9) {
             cambiarMensajeJugador("¡Empate!");
             sumarEmpate();
             bloquearBotones();
+            tablaContadorVictorias();
         } else {
             cambiarTurno();
             if (jugadorActual == 2) {
@@ -117,6 +119,8 @@ function realizarMovimiento6fichas(fila, columna) {
             if (verificarGanador()) {
                 cambiarMensajeJugador("¡Jugador " + jugadorActual + " ha ganado!");
                 bloquearBotones();
+                sumarGanador();
+                tablaContadorVictorias();
             } else {
                 cambiarTurno();
                 if (jugadorActual == 2) {
@@ -415,9 +419,9 @@ function tablaContadorVictorias() {
     } else {
         jug2 = "Jugador 2";
     }
-    let tablaContador = "<table id='tablaVictorias'><thead><tr><td><b>Jugador 1</b></td><td><b>" + jug2 + "</b></td></tr></thead>";
+    let tablaContador = "<table id='tablaVictorias'><thead><tr><td colspan='3'><b>Jugador 1</b></td><td colspan='3'><b>" + jug2 + "</b></td></tr></thead>";
     tablaContador += "<tr><td>Ganadas</td><td>Empatadas</td><td>Perdidas</td><td>Ganadas</td><td>Empatadas</td><td>Perdidas</td></tr>";
-    tablaContador += "<td>" + ganadas1 + "</td><td>" + empatadas1 + "</td><td>" + perdidas1 + "</td><td>" + ganadas2 + "</td><td>" + empatadas2 + "</td><td>" + perdidas2 + "</td>";
+    tablaContador += "<tr><td>" + ganadas1 + "</td><td>" + empatadas1 + "</td><td>" + perdidas1 + "</td><td>" + ganadas2 + "</td><td>" + empatadas2 + "</td><td>" + perdidas2 + "</td></tr>";
     tablaContador += "</table>"
 
     document.getElementById('contadorVictorias').innerHTML = tablaContador;
@@ -441,7 +445,7 @@ function iniciarContador() {
 }
 
 function contadorJugador() {
-    segundosTurno = 3;
+    segundosTurno = 30;
     document.getElementById('contadorJugada').innerHTML = "Tiempo restante de jugada: " + segundosTurno + "s";
 
     clearInterval(intervaloJugada);
