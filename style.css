@@ -1,7 +1,22 @@
+header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #333;
+    color: #fff;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    height: 8vh;
+    margin-bottom: 5vh;
+}
+
 .opciones {
     display: flex;
     width: 100%;
     height: auto;
+    margin-top: 10vh;
 }
 
 .modo,
@@ -16,6 +31,11 @@
 
 .botonesModoJugadores {
     display: flex;
+}
+
+.tituloModoJugadores {
+    font-size: 3vh;
+    font-weight: bold;
 }
 
 button {
@@ -207,14 +227,27 @@ button {
 }
 
 #tablaVictorias {
-    border: 1px solid black;
     border-collapse: collapse;
+    width: 100%;
+    font-family: Arial, sans-serif;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#tablaVictorias th {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px;
     text-align: center;
 }
 
 #tablaVictorias td {
-    border: 1px solid black;
-    padding: 2vh;
+    padding: 8px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+#tablaVictorias tr:nth-child(even) {
+    background-color: #f2f2f2;
 }
 
 #contadorTotal,
