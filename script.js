@@ -82,7 +82,7 @@ function realizarMovimiento9fichas(fila, columna) {
             sumarGanador();
             bloquearBotones();
             tablaContadorVictorias();
-        } else if ((modoJuegoPartida == 1 || modoJuegoPartida == 3) && movimientosRealizados == 9) {
+        } else if (movimientosRealizados == 9) {
             cambiarMensajeJugador("¡Empate!", "empate");
             sumarEmpate();
             bloquearBotones();
