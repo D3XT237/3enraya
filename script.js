@@ -9,8 +9,8 @@ let arrayPosicionesLibres = [[0, 0], [0, 1], [0, 2], [1, 0], [1, 1], [1, 2], [2,
 let arrayPosicionesIA = [];
 let anteriorPosicion = "";
 let anteriorPosicionIA = "";
-let filaRandomIA = "";
-let columnaRandomIA = "";
+let filaRandomIA;
+let columnaRandomIA;
 let contador = 0;
 let intervalo;
 let intervaloJugada;
@@ -82,11 +82,12 @@ function realizarMovimiento9fichas(fila, columna) {
             sumarGanador();
             bloquearBotones();
             tablaContadorVictorias();
-        } else if (modoJuegoPartida == 1 && movimientosRealizados == 9) {
+        } else if ((modoJuegoPartida == 1 || modoJuegoPartida == 3) && movimientosRealizados == 9) {
             cambiarMensajeJugador("¡Empate!", "empate");
             sumarEmpate();
             bloquearBotones();
             tablaContadorVictorias();
+            pararContadores();
         } else {
             cambiarTurno();
             if (jugadorActual == 2) {
