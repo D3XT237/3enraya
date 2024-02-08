@@ -11,16 +11,123 @@ h1 {
 .modo,
 .jugadores {
     display: flex;
+    flex-direction: column;
     width: 50%;
     height: auto;
     align-items: center;
     justify-content: center;
 }
 
+.botonesModoJugadores {
+    display: flex;
+}
+
 button {
-    height: 3vh;
-    width: auto;
-    margin-left: 1vh;
+    margin: 0vh 2vh 0vh 2vh;
+}
+
+.fancy {
+    background-color: transparent;
+    border: 2px solid #000;
+    border-radius: 0;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    margin: 0;
+    outline: none;
+    overflow: visible;
+    padding: 1.25em 2em;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    text-transform: none;
+    transition: all 0.3s ease-in-out;
+    user-select: none;
+    font-size: 13px;
+}
+
+.fancy::before {
+    content: " ";
+    width: 1.5625rem;
+    height: 2px;
+    background: black;
+    top: 50%;
+    left: 1.5em;
+    position: absolute;
+    transform: translateY(-50%);
+    transform-origin: center;
+    transition: background 0.3s linear, width 0.3s linear;
+}
+
+.fancy .text {
+    font-size: 1.125em;
+    line-height: 1.33333em;
+    padding-left: 2em;
+    display: block;
+    text-align: left;
+    transition: all 0.3s ease-in-out;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: black;
+}
+
+.fancy .top-key {
+    height: 2px;
+    width: 1.5625rem;
+    top: -2px;
+    left: 0.625rem;
+    position: absolute;
+    background: #e8e8e8;
+    transition: width 0.5s ease-out, left 0.3s ease-out;
+}
+
+.fancy .bottom-key-1 {
+    height: 2px;
+    width: 1.5625rem;
+    right: 1.875rem;
+    bottom: -2px;
+    position: absolute;
+    background: #e8e8e8;
+    transition: width 0.5s ease-out, right 0.3s ease-out;
+}
+
+.fancy .bottom-key-2 {
+    height: 2px;
+    width: 0.625rem;
+    right: 0.625rem;
+    bottom: -2px;
+    position: absolute;
+    background: #e8e8e8;
+    transition: width 0.5s ease-out, right 0.3s ease-out;
+}
+
+.fancy:hover {
+    color: white;
+    background: black;
+}
+
+.fancy:hover::before {
+    width: 0.9375rem;
+    background: white;
+}
+
+.fancy:hover .text {
+    color: white;
+    padding-left: 1.5em;
+}
+
+.fancy:hover .top-key {
+    left: -2px;
+    width: 0px;
+}
+
+.fancy:hover .bottom-key-1,
+.fancy:hover .bottom-key-2 {
+    right: 0;
+    width: 0;
 }
 
 .mensajesJugador {
@@ -37,6 +144,7 @@ button {
 }
 
 .contenedorJuego {
+    padding-top: 0;
     display: flex;
     width: 100%;
     height: auto;
@@ -47,15 +155,33 @@ button {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-bottom: 2vh;
 }
 
-.nopulsado {
-    background-color: aqua;
+.nopulsado,
+.pulsado {
+    color: #090909;
+    padding: 0.7em 1.7em;
+    font-size: 2vh;
+    border-radius: 0.5em;
+    background: #e8e8e8;
+    cursor: pointer;
+    border: 1px solid #e8e8e8;
+    transition: all 0.3s;
+    box-shadow: 6px 6px 12px #c5c5c5, -6px -6px 12px #ffffff;
+}
+
+.nopulsado:active,
+.pulsado:active {
+    color: #666;
+    box-shadow: inset 4px 4px 12px #c5c5c5, inset -4px -4px 12px #ffffff;
 }
 
 .pulsado {
-    background-color: red;
+    background-color: rgb(70, 70, 70);
+    color: white;
 }
+
 
 #tablero {
     display: flex;
@@ -63,7 +189,7 @@ button {
     height: auto;
     align-items: center;
     justify-content: center;
-    margin-top: 10vh;
+    margin-top: 2vh;
 }
 
 .tiempo {
@@ -81,6 +207,7 @@ button {
     height: auto;
     justify-content: center;
     align-items: center;
+    margin-right: 10vh;
 }
 
 #tablaVictorias {
@@ -118,7 +245,7 @@ button {
 }
 
 #imgXO {
-   object-fit: contain;
+    object-fit: contain;
 }
 
 .tablaJuego td {
@@ -127,4 +254,47 @@ button {
     width: 15vh;
     padding: 0;
     overflow: hidden;
+}
+
+.error,
+.victoria,
+.empate {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    width: 320px;
+    padding: 12px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: start;
+    background: #EF665B;
+    justify-content: space-between;
+    border-radius: 8px;
+    box-shadow: 0px 0px 5px -3px #111;
+}
+
+.empate {
+    background: rgb(255, 192, 76);
+}
+
+.victoria {
+    background: rgb(74, 203, 74);
+}
+
+.error__icon {
+    width: 20px;
+    height: 20px;
+    transform: translateY(-2px);
+    margin-right: 8px;
+}
+
+.error__icon path {
+    fill: #fff;
+}
+
+.error__title {
+    font-weight: 500;
+    font-size: 14px;
+    color: #fff;
+    flex-grow: 1;
+    text-align: center;
 }

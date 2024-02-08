@@ -29,9 +29,9 @@ Crea la tabla con los botones e inicia el juego con la configuración indicada
 */
 function iniciarJuego() {
     if (numFichasPartida == 0) {
-        cambiarMensajeJugador("Seleccione número de fichas");
+        cambiarMensajeJugador("Seleccione número de fichas", "error");
     } else if (modoJuegoPartida == 0) {
-        cambiarMensajeJugador("Seleccione un modo de juego");
+        cambiarMensajeJugador("Seleccione un modo de juego", "error");
     } else {
         reiniciarJuego();
         mostrarTabla();
@@ -78,12 +78,12 @@ function realizarMovimiento9fichas(fila, columna) {
         cambiarBoton(fila, columna, jugadorActual);
 
         if (verificarGanador()) {
-            cambiarMensajeJugador("¡Jugador " + jugadorActual + " ha ganado!");
+            cambiarMensajeJugador("¡Jugador " + jugadorActual + " ha ganado!", "victoria");
             sumarGanador();
             bloquearBotones();
             tablaContadorVictorias();
         } else if (modoJuegoPartida == 1 && movimientosRealizados == 9) {
-            cambiarMensajeJugador("¡Empate!");
+            cambiarMensajeJugador("¡Empate!", "empate");
             sumarEmpate();
             bloquearBotones();
             tablaContadorVictorias();
@@ -123,7 +123,7 @@ function realizarMovimiento6fichas(fila, columna) {
             anteriorPosicion = "";
 
             if (verificarGanador()) {
-                cambiarMensajeJugador("¡Jugador " + jugadorActual + " ha ganado!");
+                cambiarMensajeJugador("¡Jugador " + jugadorActual + " ha ganado!", "victoria");
                 bloquearBotones();
                 sumarGanador();
                 tablaContadorVictorias();
@@ -143,7 +143,7 @@ function realizarMovimiento6fichas(fila, columna) {
                 }
             }
         } else {
-            cambiarMensajeJugador("Tienes 3 fichas o estas jugando la ficha en la misma posición");
+            cambiarMensajeJugador("Tienes 3 fichas o estas jugando la ficha en la misma posición", "error");
         }
     } else if (arrayJuego[fila][columna] == jugadorActual && fichasJugadorActual() == 3) {
         anteriorPosicion = document.getElementById("fila" + fila + "columna" + columna).id;
@@ -233,7 +233,7 @@ function verificarGanador() {
 }
 
 function perderPartida() {
-    cambiarMensajeJugador("Jugador " + jugadorActual + " se ha quedado sin tiempo. Partida perdida");
+    cambiarMensajeJugador("Jugador " + jugadorActual + " se ha quedado sin tiempo. Partida perdida", "error");
     bloquearBotones();
     pararContadores();
 }
@@ -245,6 +245,7 @@ function reiniciarJuego() {
     borrarMensaje();
     iniciarContador();
     contadorJugador();
+    mostrarTabla();
     arrayJuego = Array.from({ length: 3 }, () => Array(3).fill(0));
     jugadorActual = 1;
     movimientosRealizados = 0;
@@ -260,7 +261,6 @@ function elegirNumFichas(numFichas, id) {
     borrarMensaje();
     cambiarColorBotonFichas(id);
     numFichasPartida = numFichas;
-    reiniciarStatsPartidas();
 }
 
 /*
@@ -404,9 +404,17 @@ function cambiarTurno() {
     }
 }
 
-function cambiarMensajeJugador(texto) {
-    document.getElementById('textoMensaje').innerHTML = texto;
+function cambiarMensajeJugador(texto, tipo) {
+    let mensaje = `
+    <div class="` + tipo + `">
+        <div class="error__icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" height="24" fill="none"><path fill="#393a37" d="m13 13h-2v-6h2zm0 4h-2v-2h2zm-1-15c-1.3132 0-2.61358.25866-3.82683.7612-1.21326.50255-2.31565 1.23915-3.24424 2.16773-1.87536 1.87537-2.92893 4.41891-2.92893 7.07107 0 2.6522 1.05357 5.1957 2.92893 7.0711.92859.9286 2.03098 1.6651 3.24424 2.1677 1.21325.5025 2.51363.7612 3.82683.7612 2.6522 0 5.1957-1.0536 7.0711-2.9289 1.8753-1.8754 2.9289-4.4189 2.9289-7.0711 0-1.3132-.2587-2.61358-.7612-3.82683-.5026-1.21326-1.2391-2.31565-2.1677-3.24424-.9286-.92858-2.031-1.66518-3.2443-2.16773-1.2132-.50254-2.5136-.7612-3.8268-.7612z"></path></svg>
+        </div>
+        <div class="error__title">` + texto + `</div>
+    </div>`;
+    document.getElementById('textoMensaje').innerHTML = mensaje;
 }
+
 
 function borrarMensaje() {
     document.getElementById('textoMensaje').innerHTML = "";

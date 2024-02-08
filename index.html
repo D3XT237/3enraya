@@ -1,38 +1,52 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>3 en raya</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <h1 align="center">3 EN RAYA</h1>
     <div class="opciones">
         <div class="modo">
-            <p>Modo:</p>
-            <button class="numFichas nopulsado" id="9fichas" onclick="elegirNumFichas(1, '9fichas')">9 fichas</button>
-            <button class="numFichas nopulsado" id="6fichas" onclick="elegirNumFichas(2, '6fichas')">6 fichas</button>
+            <div>MODO</div><br>
+            <div class="botonesModoJugadores">
+                <button class="numFichas nopulsado" id="9fichas" onclick="elegirNumFichas(1, '9fichas')">9 fichas</button>
+                <button class="numFichas nopulsado" id="6fichas" onclick="elegirNumFichas(2, '6fichas')">6 fichas</button>
+            </div>
         </div>
         <div class="jugadores">
-            <p>Jugadores:</p>
-            <button class='modoJuego nopulsado' id="1vsAleatorio" onclick="elegirModoJuego(1, '1vsAleatorio')">1 vs Aleatorio</button>
-            <button class='modoJuego nopulsado' id="1vsIA" onclick="elegirModoJuego(2, '1vsIA')">1 vs IA</button>
-            <button class='modoJuego nopulsado' id="2jugadores" onclick="elegirModoJuego(3, '2jugadores')">2 jugadores</button>
+            <div>JUGADORES</div><br>
+            <div class="botonesModoJugadores">
+                <button class='modoJuego nopulsado' id="1vsAleatorio" onclick="elegirModoJuego(1, '1vsAleatorio')">1 vs Aleatorio</button>
+                <button class='modoJuego nopulsado' id="1vsIA" onclick="elegirModoJuego(2, '1vsIA')">1 vs IA</button>
+                <button class='modoJuego nopulsado' id="2jugadores" onclick="elegirModoJuego(3, '2jugadores')">2 jugadores</button>
+            </div>
         </div>
     </div>
     <div class="comenzarJuego">
-        <button class="iniciarJuego" onclick="iniciarJuego()">Comenzar partida</button>
+        <button class="fancy" onclick="iniciarJuego()">
+            <span class="top-key"></span>
+            <span class="text">Comenzar</span>
+            <span class="bottom-key-1"></span>
+            <span class="bottom-key-2"></span>
+          </button>
     </div>
-    <div class="mensajesJugador"><p id="textoMensaje"></p></div>
+    <div class="mensajesJugador">
+        <p id="textoMensaje"></p>
+    </div>
     <div class="contenedorJuego">
         <div id="tablero"></div>
         <div class="tiempo">
-            <div id ="contadorTotal"></div>
-            <div id ="contadorJugada"></div>
+            <div id="contadorTotal"></div>
+            <div id="contadorJugada"></div>
         </div>
         <div id="contadorVictorias"></div>
     </div>
     <script src="script.js"></script>
 </body>
+
 </html>
