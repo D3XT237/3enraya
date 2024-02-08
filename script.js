@@ -22,6 +22,7 @@ let empatadas2 = 0;
 let perdidas1 = 0;
 let perdidas2 = 0;
 tablaContadorVictorias();
+mostrarTabla();
 /*
 Crea la tabla con los botones e inicia el juego con la configuración indicada
 */
@@ -32,7 +33,12 @@ function iniciarJuego() {
         cambiarMensajeJugador("Seleccione un modo de juego");
     } else {
         reiniciarJuego();
-        let tabla = "<table class='tablaJuego'>";
+        mostrarTabla();
+    }
+}
+
+function mostrarTabla(){
+    let tabla = "<table class='tablaJuego'>";
 
         for (let fila = 0; fila < 3; fila++) {
             tabla += "<tr>";
@@ -44,7 +50,6 @@ function iniciarJuego() {
 
         tabla += "</table>";
         document.getElementById("tablero").innerHTML = tabla;
-    }
 }
 
 /*
