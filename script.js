@@ -192,6 +192,85 @@ function vsAleatorio() {
         vsAleatorio();
     }
 }
+
+function vsIA() {
+    if (intentarGanar()) {
+        return; // La IA intenta ganar si puede
+    } else if (bloquearJugador()){
+        return; // La IA bloquea si el otro jugador puede ganar
+    } else {
+        vsAleatorio();
+    }
+}
+
+function intentarGanar() {
+    if(comprobarJugadaGanadora(2)){
+        return true
+    }
+    // Si no se encuentra ninguna situación para ganar, devuelve false
+    return false;
+}
+
+function bloquearJugador() {
+    if(comprobarJugadaGanadora(1)){
+        return true
+    }
+    // Si no se encuentra ninguna situación para bloquear, devuelve false
+    return false;
+}
+
+function comprobarJugadaGanadora(jugador) {
+    // Comprobación de filas
+    for (let fila = 0; fila < 3; fila++) {
+        if (arrayJuego[fila][0] === jugador && arrayJuego[fila][1] === jugador && arrayJuego[fila][2] === 0) {
+            realizarMovimiento(fila, 2);
+            return true;
+        } else if (arrayJuego[fila][0] === jugador && arrayJuego[fila][1] === 0 && arrayJuego[fila][2] === jugador) {
+            realizarMovimiento(fila, 1);
+            return true;
+        } else if (arrayJuego[fila][0] === 0 && arrayJuego[fila][1] === jugador && arrayJuego[fila][2] === jugador) {
+            realizarMovimiento(fila, 0);
+            return true;
+        }
+    }
+
+    // Comprobación de columnas
+    for (let columna = 0; columna < 3; columna++) {
+        if (arrayJuego[0][columna] === jugador && arrayJuego[1][columna] === jugador && arrayJuego[2][columna] === 0) {
+            realizarMovimiento(2, columna);
+            return true;
+        } else if (arrayJuego[0][columna] === jugador && arrayJuego[1][columna] === 0 && arrayJuego[2][columna] === jugador) {
+            realizarMovimiento(1, columna);
+            return true;
+        } else if (arrayJuego[0][columna] === 0 && arrayJuego[1][columna] === jugador && arrayJuego[2][columna] === jugador) {
+            realizarMovimiento(0, columna);
+            return true;
+        }
+    }
+
+    // Comprobación de diagonales
+    if (arrayJuego[0][0] === jugador && arrayJuego[1][1] === jugador && arrayJuego[2][2] === 0) {
+        realizarMovimiento(2, 2);
+        return true;
+    } else if (arrayJuego[0][0] === jugador && arrayJuego[1][1] === 0 && arrayJuego[2][2] === jugador) {
+        realizarMovimiento(1, 1);
+        return true;
+    } else if (arrayJuego[0][0] === 0 && arrayJuego[1][1] === jugador && arrayJuego[2][2] === jugador) {
+        realizarMovimiento(0, 0);
+        return true;
+    } else if (arrayJuego[0][2] === jugador && arrayJuego[1][1] === jugador && arrayJuego[2][0] === 0) {
+        realizarMovimiento(2, 0);
+        return true;
+    } else if (arrayJuego[0][2] === jugador && arrayJuego[1][1] === 0 && arrayJuego[2][0] === jugador) {
+        realizarMovimiento(1, 1);
+        return true;
+    } else if (arrayJuego[0][2] === 0 && arrayJuego[1][1] === jugador && arrayJuego[2][0] === jugador) {
+        realizarMovimiento(0, 2);
+        return true;
+    }
+
+    return false;
+}
 /*
 Recibe los párametros de la posición a cambiar y el jugador que toma la posición y cambia lo que muestra el botón
 */
@@ -201,7 +280,7 @@ function cambiarBoton(fila, columna, jugadorActual) {
     if (jugadorActual == 1) {
         casilla.innerHTML = "<img src='imagenes/x.png' alt='X' id='imgXO'></img>";
     } else if (jugadorActual == 2) {
-        casilla.innerHTML =  "<img src='imagenes/o.png' alt='O' id='imgXO'></img>";
+        casilla.innerHTML = "<img src='imagenes/o.png' alt='O' id='imgXO'></img>";
     } else {
         casilla.innerHTML = '';
     }
