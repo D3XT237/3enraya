@@ -225,10 +225,12 @@ function intentarGanar() {
             let indice2 = arrayPosicionesIA_copia.findIndex(arr => arr[0] === filaNoCambiar2 && arr[1] === columnaNoCambiar2);
             arrayPosicionesIA_copia.splice(indice2, 1);
 
-            // Asignamos la fila y columna del botón que queremos quitar y realizamos movimiento
+            // Asignamos la fila y columna del botón que queremos quitar. Cambiamos su dibujo y su valor
             let fila_casillaQuitarIA = arrayPosicionesIA_copia[0][0];
             let columna_casillaQuitarIA = arrayPosicionesIA_copia[0][1];
             realizarMovimiento(fila_casillaQuitarIA, columna_casillaQuitarIA);
+
+            comprobarJugadaGanadora(2);
         }
     }
     // Si no se encuentra ninguna situación para ganar, devuelve false
@@ -250,6 +252,7 @@ function bloquearJugador() {
             let fila_casillaQuitarIA = arrayPosicionesIA_copia[0][0];
             let columna_casillaQuitarIA = arrayPosicionesIA_copia[0][1];
             realizarMovimiento(fila_casillaQuitarIA, columna_casillaQuitarIA);
+            comprobarJugadaGanadora(1);
         }
     }
     // Si no se encuentra ninguna situación para bloquear, devuelve false
