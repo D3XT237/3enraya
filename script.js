@@ -212,7 +212,7 @@ function intentarGanar() {
             realizarMovimiento(filaCambiar_IA, columnaCambiar_IA);
             return true;
         } else if (fichasJugadorActual() == 3) { // Si tiene 3 fichas
-            let arrayPosicionesIA_copia = arrayPosicionesIA.slice(); // Creamos una copia del array de posiciones que tiene la IA
+            let arrayPosicionesIA_copia = arrayPosicionesIA.map(arr => [...arr]); // Creamos una copia del array de posiciones que tiene la IA
             /* 
             Buscamos los indices de las fichas que NO queremos cambiar. Los eliminamos de la copia para que sólo quede en el
             array la posición que queremos eliminar
@@ -226,11 +226,23 @@ function intentarGanar() {
             let fila_casillaQuitarIA = arrayPosicionesIA_copia[0][0];
             let columna_casillaQuitarIA = arrayPosicionesIA_copia[0][1];
 
+            let indiceQuitar = arrayPosicionesIA.findIndex(arr => arr[0] == fila_casillaQuitarIA && arr[1] == columna_casillaQuitarIA);
+            arrayPosicionesIA.splice(indiceQuitar, 1);
+
             cambiarBoton(fila_casillaQuitarIA, columna_casillaQuitarIA, 0);
-            arrayPosicionesLibres.push(fila_casillaQuitarIA, columna_casillaQuitarIA);
+            arrayPosicionesLibres.push([fila_casillaQuitarIA, columna_casillaQuitarIA]);
 
             restarFichaJugador(); // Restamos una ficha para que se quede con 2
-            intentarGanar(); // Volvemos a intentar ganar para que esta vez haga el movimiento ganador
+
+            if (comprobarJugadaGanadora(2)) {
+                eliminarPosicionLibre(filaCambiar_IA, columnaCambiar_IA);
+                cambiarBoton(filaCambiar_IA, columnaCambiar_IA, 2);
+                cambiarMensajeJugador('Has perdido contra la IA', 'error');
+                bloquearBotones();
+                sumarGanador();
+                tablaContadorVictorias();
+                return true;
+            }
         }
     }
     // Si no se encuentra ninguna situación para ganar, devuelve false
@@ -244,22 +256,76 @@ function bloquearJugador() {
             realizarMovimiento(filaCambiar_IA, columnaCambiar_IA);
             return true;
         } else { // Si tiene 3 fichas
-            let indiceAleatorioIA = Math.floor(Math.random() * arrayPosicionesIA.length); //Buscamos una de las 3 posiciones disponibles
-            let posicionAleatoriaIA = arrayPosicionesIA[indiceAleatorioIA]; // La seleccionamos
+            let arrayPosicionesIA_copia = arrayPosicionesIA.map(arr => [...arr]); // Creamos una copia del array de posiciones que tiene la IA
+
+            let indiceAleatorioIA = Math.floor(Math.random() * arrayPosicionesIA_copia.length); //Buscamos una de las 3 posiciones disponibles
+            let posicionAleatoriaIA = arrayPosicionesIA_copia[indiceAleatorioIA]; // La seleccionamos
 
             filaRandomIA = posicionAleatoriaIA[0]; // Asignamos su fila
             columnaRandomIA = posicionAleatoriaIA[1]; // Asignamos su columna
 
-            restarFichaJugador(); // Restamos una ficha para que se quede con 2
+            while (comprobarDescubierto(filaRandomIA, columnaRandomIA)) {
+                let indice = arrayPosicionesIA_copia.findIndex(arr => arr[0] === filaRandomIA && arr[1] === columnaRandomIA);
+                arrayPosicionesIA_copia.splice(indice, 1);
+                indiceAleatorioIA = Math.floor(Math.random() * arrayPosicionesIA_copia.length); //Buscamos una de las 3 posiciones disponibles
+                posicionAleatoriaIA = arrayPosicionesIA_copia[indiceAleatorioIA]; // La seleccionamos
+                
+            columnaRandomIA = posicionAleatoriaIA[1]; // Asignamos su columna
+            filaRandomIA = posicionAleatoriaIA[0];
+            }
             arrayPosicionesIA.splice(indiceAleatorioIA, 1); // Quitamos del array de posiciones de la IA la posición que vamos a eliminar
             arrayPosicionesLibres.push([filaRandomIA, columnaRandomIA]);
             cambiarBoton(filaRandomIA, columnaRandomIA, 0); // Vaciamos y dejamos libre la casilla
-            bloquearJugador(); // Volvemos a intentar bloquear para que esta vez lo haga
+            anteriorPosicionIA = document.getElementById("fila" + filaRandomIA + "columna" + columnaRandomIA).id; // Guardamos la posición anterior
+            restarFichaJugador(); // Restamos una ficha para que se quede con 2
+
+            if (comprobarJugadaGanadora(1)) {
+
+            }
         }
     }
     // Si no se encuentra ninguna situación para bloquear, devuelve false
     return false;
 }
+
+function comprobarDescubierto(fila_IA, columna_IA) {
+    // Comprobando fila
+    for (let fila = 0; fila < 3; fila++) {
+        if (columna_IA == 0 && arrayJuego[fila][1] == 1 && arrayJuego[fila][2] == 1) {
+            return true;
+        } else if (columna_IA == 1 && arrayJuego[fila][0] == 1 && arrayJuego[fila][2] == 1) {
+            return true;
+        } else if (columna_IA == 2 && arrayJuego[fila][0] == 1 && arrayJuego[fila][1] == 1) {
+            return true;
+        }
+    }
+    // Comprobar columna
+    for (let columna = 0; columna < 3; columna++) {
+        if (fila_IA == 0 && arrayJuego[1][columna] == 1 && arrayJuego[2][columna] == 1) {
+            return true;
+        } else if (fila_IA == 1 && arrayJuego[0][columna] == 1 && arrayJuego[2][columna] == 1) {
+            return true;
+        } else if (fila_IA == 2 && arrayJuego[0][columna] == 1 && arrayJuego[1][columna] == 1) {
+            return true;
+        }
+    }
+    //Comprobar diagonales
+    if ((fila_IA == 1 && columna_IA == 1) && ((arrayJuego[0][0] == 1 && arrayJuego[2][2] == 1) || (arrayJuego[0][2] == 1 && arrayJuego[2][0] == 1))) {
+        return true;
+    } else if ((fila_IA == 0 && columna_IA == 0) && (arrayJuego[1][1] == 1 && arrayJuego[2][2] == 1)) {
+        return true;
+    } else if ((fila_IA == 0 && columna_IA == 2) && (arrayJuego[1][1] == 1 && arrayJuego[2][0] == 1)) {
+        return true;
+    } else if ((fila_IA == 2 && columna_IA == 0) && (arrayJuego[1][1] == 1 && arrayJuego[0][2] == 1)) {
+        return true;
+    } else if ((fila_IA == 2 && columna_IA == 2) && (arrayJuego[1][1] == 1 && arrayJuego[0][0] == 1)) {
+        return true;
+    }
+
+    return false;
+}
+
+
 
 function comprobarJugadaGanadora(jugador) {
     // Comprobación de filas
@@ -376,13 +442,13 @@ function comprobarJugadaGanadora(jugador) {
 /*
 Recibe los párametros de la posición a cambiar y el jugador que toma la posición y cambia lo que muestra el botón
 */
-function cambiarBoton(fila, columna, jugadorActual) {
+function cambiarBoton(fila, columna, jugador) {
     let casilla = document.getElementById('fila' + fila + 'columna' + columna);
-    arrayJuego[fila][columna] = jugadorActual;
+    arrayJuego[fila][columna] = jugador;
 
-    if (jugadorActual == 1) {
+    if (jugador == 1) {
         casilla.innerHTML = "<img src='imagenes/x.png' alt='X' id='imgXO'></img>";
-    } else if (jugadorActual == 2) {
+    } else if (jugador == 2) {
         casilla.innerHTML = "<img src='imagenes/o.png' alt='O' id='imgXO'></img>";
     } else {
         casilla.innerHTML = '';
@@ -700,5 +766,6 @@ function mostrarStats() {
     document.getElementById('posicionesLibresIA').innerHTML = 'Posiciones IA: ' + arrayPosicionesIA.join(', ');
     document.getElementById('anteriorPosicion').innerHTML = 'Anterior posicion: ' + anteriorPosicion;
     document.getElementById('anteriorPosicionIA').innerHTML = 'Anterior posicion IA:' + anteriorPosicionIA;
+    document.getElementById('arrayJuego').innerHTML = 'Array Juego: ' + arrayJuego.join(' || ');
 
 }
