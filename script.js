@@ -165,33 +165,33 @@ busca una de las posiciones que tiene en su poder, la elimina, se resta una fich
 ahora buscará una nueva posición distinta de la que acaba de eliminar
 */
 function vsAleatorio() {
+    if (fichasJugador2 < 3) { // Si puede jugar ficha
+        let posicionAleatoria;
+        let filaRandom;
+        let columnaRandom;
+        do {
+            let indiceAleatorio = Math.floor(Math.random() * arrayPosicionesLibres.length); // Cogemos una posición de las posiciones libres 
+            posicionAleatoria = arrayPosicionesLibres[indiceAleatorio]; // Seleccionamos la posición del indice
+            filaRandom = posicionAleatoria[0]; // Seleccionamos su fila
+            columnaRandom = posicionAleatoria[1]; // Seleccionamos su columna
+        } while ("fila" + filaRandom + "columna" + columnaRandom == anteriorPosicionIA);
+        anteriorPosicion = "";
+        arrayPosicionesIA.push([filaRandom, columnaRandom]); // Agregamos al array de posiciones que tiene ganada la IA la posición
+        realizarMovimiento(filaRandom, columnaRandom); // Hacemos el movimiento
+    } else { // Si tiene 3 fichas
+        let indiceAleatorioIA = Math.floor(Math.random() * arrayPosicionesIA.length); // Buscamos un índice de las posiciones que tiene la IA
+        let posicionAleatoriaIA = arrayPosicionesIA[indiceAleatorioIA]; // Seleccionamos la posición del índice
 
-    if (fichasJugador2 < 3) {
-        let indiceAleatorio = Math.floor(Math.random() * arrayPosicionesLibres.length); // Cogemos una posición de las posiciones libres 
-        let posicionAleatoria = arrayPosicionesLibres[indiceAleatorio];
+        filaRandomIA = posicionAleatoriaIA[0]; // Seleccionamos la fila
+        columnaRandomIA = posicionAleatoriaIA[1]; // Seleccionamos la columna
 
-        let filaRandom = posicionAleatoria[0]; // Seleccionamos su fila
-        let columnaRandom = posicionAleatoria[1]; // Seleccionamos su columna
+        restarFichaJugador(); // Le restamos la ficha a la IA
+        arrayPosicionesIA.splice(indiceAleatorioIA, 1); // Quitamos del array de posiciones de la IA la que ha salido
+        arrayPosicionesLibres.push([filaRandomIA, columnaRandomIA]); // Marcamos que ha quedado libre la posición
+        anteriorPosicionIA = document.getElementById("fila" + filaRandomIA + "columna" + columnaRandomIA).id; // Guardamos la posición anterior
+        cambiarBoton(filaRandomIA, columnaRandomIA, 0); // Dejamos libre la casilla
 
-        if (anteriorPosicionIA != "") {
-            arrayPosicionesLibres.push([filaRandomIA, columnaRandomIA]);
-        }
-        anteriorPosicionIA = "";
-        arrayPosicionesIA.push([filaRandom, columnaRandom]);
-        realizarMovimiento(filaRandom, columnaRandom);
-    } else {
-        let indiceAleatorioIA = Math.floor(Math.random() * arrayPosicionesIA.length);
-        let posicionAleatoriaIA = arrayPosicionesIA[indiceAleatorioIA];
-
-        filaRandomIA = posicionAleatoriaIA[0];
-        columnaRandomIA = posicionAleatoriaIA[1];
-
-        restarFichaJugador();
-        arrayPosicionesIA.splice(indiceAleatorioIA, 1);
-        anteriorPosicionIA = document.getElementById("fila" + filaRandomIA + "columna" + columnaRandomIA).id;
-        cambiarBoton(filaRandomIA, columnaRandomIA, 0);
-
-        vsAleatorio();
+        vsAleatorio(); // Ahora que hay una casilla menos, volvemos a jugar para que haga el movimiento
     }
 }
 
@@ -249,6 +249,7 @@ function bloquearJugador() {
 
             restarFichaJugador(); // Restamos una ficha para que se quede con 2
             arrayPosicionesIA.splice(indiceAleatorioIA, 1); // Quitamos del array de posiciones de la IA la posición que vamos a eliminar
+            arrayPosicionesLibres.push([filaRandomIA, columnaRandomIA]);
             cambiarBoton(filaRandomIA, columnaRandomIA, 0); // Vaciamos y dejamos libre la casilla
             bloquearJugador(); // Volvemos a intentar bloquear para que esta vez lo haga
         }
