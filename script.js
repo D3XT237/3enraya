@@ -70,6 +70,7 @@ function realizarMovimiento(fila, columna) {
     } else {
         realizarMovimiento9fichas(fila, columna);
     }
+    mostrarStats();
 }
 /*
 La función comprueba si la casilla que ha sido clickada se encuentra libre. Si lo está, suma 1 al contador de movimientos y el jugador actual 
@@ -175,7 +176,7 @@ function vsAleatorio() {
             filaRandom = posicionAleatoria[0]; // Seleccionamos su fila
             columnaRandom = posicionAleatoria[1]; // Seleccionamos su columna
         } while ("fila" + filaRandom + "columna" + columnaRandom == anteriorPosicionIA);
-        anteriorPosicion = "";
+        anteriorPosicionIA = "";
         arrayPosicionesIA.push([filaRandom, columnaRandom]); // Agregamos al array de posiciones que tiene ganada la IA la posición
         realizarMovimiento(filaRandom, columnaRandom); // Hacemos el movimiento
     } else { // Si tiene 3 fichas
@@ -432,6 +433,7 @@ function reiniciarJuego() {
     fichasJugador1 = 0;
     fichasJugador2 = 0;
     arrayPosicionesLibres = [[0, 0], [0, 1], [0, 2], [1, 0], [1, 1], [1, 2], [2, 0], [2, 1], [2, 2]];
+    arrayPosicionesIA = [];
 }
 
 /*
@@ -643,7 +645,7 @@ function iniciarContador() {
 }
 
 function contadorJugador() {
-    segundosTurno = 30;
+    segundosTurno = 1000;
     document.getElementById('contadorJugada').innerHTML = "Tiempo restante de jugada: " + segundosTurno + "s";
 
     clearInterval(intervaloJugada);
@@ -679,4 +681,14 @@ function reiniciarStatsPartidas() {
     perdidas1 = 0;
     perdidas2 = 0;
     tablaContadorVictorias();
+}
+
+function mostrarStats(){
+    document.getElementById('fichasJug1').innerHTML = 'Fichas jugador 1: ' + fichasJugador1;
+    document.getElementById('fichasJug2').innerHTML = 'Fichas jugador 2: ' + fichasJugador2;
+    document.getElementById('posicionesLibres').innerHTML = 'Posiciones libres: ' + arrayPosicionesLibres.join(', ');
+    document.getElementById('posicionesLibresIA').innerHTML = 'Posiciones IA: ' + arrayPosicionesIA.join(', ');
+    document.getElementById('anteriorPosicion').innerHTML = 'Anterior posicion: ' + anteriorPosicion;
+    document.getElementById('anteriorPosicionIA').innerHTML ='Anterior posicion IA:' + anteriorPosicionIA;
+
 }
