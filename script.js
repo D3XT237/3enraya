@@ -721,7 +721,7 @@ function iniciarContador() {
 }
 
 function contadorJugador() {
-    segundosTurno = 1000;
+    segundosTurno = 30;
     document.getElementById('contadorJugada').innerHTML = "Tiempo restante de jugada: " + segundosTurno + "s";
 
     clearInterval(intervaloJugada);
