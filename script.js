@@ -227,9 +227,10 @@ function intentarGanar() {
             let columna_casillaQuitarIA = arrayPosicionesIA_copia[0][1];
 
             cambiarBoton(fila_casillaQuitarIA, columna_casillaQuitarIA, 0);
+            arrayPosicionesLibres.push(fila_casillaQuitarIA, columna_casillaQuitarIA);
 
             restarFichaJugador(); // Restamos una ficha para que se quede con 2
-            intentarGanar() // Volvemos a intentar ganar para que esta vez haga el movimiento ganador
+            intentarGanar(); // Volvemos a intentar ganar para que esta vez haga el movimiento ganador
         }
     }
     // Si no se encuentra ninguna situación para ganar, devuelve false
@@ -239,6 +240,7 @@ function intentarGanar() {
 function bloquearJugador() {
     if (comprobarJugadaGanadora(1)) { // Comprueba si el jugador humano tiene posibilidad de ganar
         if (fichasJugadorActual() < 3) { // Si tiene fichas para bloquear, bloquea
+            arrayPosicionesIA.push([filaCambiar_IA, columnaCambiar_IA]);
             realizarMovimiento(filaCambiar_IA, columnaCambiar_IA);
             return true;
         } else { // Si tiene 3 fichas
@@ -434,6 +436,14 @@ function reiniciarJuego() {
     fichasJugador2 = 0;
     arrayPosicionesLibres = [[0, 0], [0, 1], [0, 2], [1, 0], [1, 1], [1, 2], [2, 0], [2, 1], [2, 2]];
     arrayPosicionesIA = [];
+    anteriorPosicion = null;
+    anteriorPosicionIA = null;
+    filaCambiar_IA = null;
+    columnaCambiar_IA = null;
+    filaNoCambiar1 = null;
+    columnaNoCambiar1 = null;
+    filaNoCambiar2 = null;
+    columnaNoCambiar2 = null;
 }
 
 /*
@@ -683,12 +693,12 @@ function reiniciarStatsPartidas() {
     tablaContadorVictorias();
 }
 
-function mostrarStats(){
+function mostrarStats() {
     document.getElementById('fichasJug1').innerHTML = 'Fichas jugador 1: ' + fichasJugador1;
     document.getElementById('fichasJug2').innerHTML = 'Fichas jugador 2: ' + fichasJugador2;
     document.getElementById('posicionesLibres').innerHTML = 'Posiciones libres: ' + arrayPosicionesLibres.join(', ');
     document.getElementById('posicionesLibresIA').innerHTML = 'Posiciones IA: ' + arrayPosicionesIA.join(', ');
     document.getElementById('anteriorPosicion').innerHTML = 'Anterior posicion: ' + anteriorPosicion;
-    document.getElementById('anteriorPosicionIA').innerHTML ='Anterior posicion IA:' + anteriorPosicionIA;
+    document.getElementById('anteriorPosicionIA').innerHTML = 'Anterior posicion IA:' + anteriorPosicionIA;
 
 }
