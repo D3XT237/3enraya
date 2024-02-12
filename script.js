@@ -99,7 +99,7 @@ function realizarMovimiento9fichas(fila, columna) {
             if (jugadorActual == 2) {
                 switch (modoJuegoPartida) {
                     case 1:
-                        vsAleatorio(1);
+                        vsAleatorio();
                         break;
                     case 2:
                         vsIA();
@@ -138,7 +138,7 @@ function realizarMovimiento6fichas(fila, columna) {
                 if (jugadorActual == 2) {
                     switch (modoJuegoPartida) {
                         case 1:
-                            vsAleatorio(1);
+                            vsAleatorio();
                             break;
                         case 2:
                             vsIA();
@@ -165,11 +165,7 @@ libre y una vez encontrada realiza el movimiento. En caso de jugar en modo de 6 
 busca una de las posiciones que tiene en su poder, la elimina, se resta una ficha e inicia de manera recursiva la función otra vez. Al tener una ficha menos
 ahora buscará una nueva posición distinta de la que acaba de eliminar
 */
-async function vsAleatorio(variable) {
-    if (variable == 1) {
-        await new Promise(resolve => setTimeout(resolve, 500));
-    }
-
+function vsAleatorio() {
     if (fichasJugador2 < 3) { // Si puede jugar ficha
         let posicionAleatoria;
         let filaRandom;
@@ -196,25 +192,24 @@ async function vsAleatorio(variable) {
         anteriorPosicionIA = document.getElementById("fila" + filaRandomIA + "columna" + columnaRandomIA).id; // Guardamos la posición anterior
         cambiarBoton(filaRandomIA, columnaRandomIA, 0); // Dejamos libre la casilla
 
-        await vsAleatorio(1); // Ahora que hay una casilla menos, volvemos a jugar para que haga el movimiento
+        vsAleatorio(); // Ahora que hay una casilla menos, volvemos a jugar para que haga el movimiento
     }
 }
-
 
 function vsIA() {
     bloquearBotones(); // Primero bloqueamos los botones
 
-    setTimeout(function () {
+    setTimeout(function() {
         desbloquearBotones();
         if (intentarGanar()) {
             // La IA intenta ganar si puede
-            return;
+            return; 
         } else if (bloquearJugador()) {
             // La IA bloquea si el otro jugador puede ganar
-            return;
+            return; 
         } else {
             // Si no hay ninguna jugada estratégica, la IA hace una jugada aleatoria
-            vsAleatorio(2);
+            vsAleatorio();
             return;
         }
     }, 500); // Esperamos un segundo antes de ejecutar la lógica de la IA
@@ -249,7 +244,7 @@ function intentarGanar() {
             arrayPosicionesLibres.push([fila_casillaQuitarIA, columna_casillaQuitarIA]);
 
             restarFichaJugador(); // Restamos una ficha para que se quede con 2
-
+            
             intentarGanar();
         }
     }
@@ -273,7 +268,7 @@ function bloquearJugador() {
             columnaRandomIA = posicionAleatoriaIA[1]; // Asignamos su columna
 
             while (comprobarDescubierto(filaRandomIA, columnaRandomIA)) {
-                if (arrayPosicionesIA_copia.length == 1) {
+                if (arrayPosicionesIA_copia.length == 1){
                     break;
                 }
                 let indice = arrayPosicionesIA_copia.findIndex(arr => arr[0] === filaRandomIA && arr[1] === columnaRandomIA);
@@ -286,7 +281,7 @@ function bloquearJugador() {
             }
             let indiceQuitar = arrayPosicionesIA.findIndex(arr => arr[0] === filaRandomIA && arr[1] === columnaRandomIA);
             arrayPosicionesIA.splice(indiceQuitar, 1); // Quitamos del array de posiciones de la IA la posición que vamos a eliminar
-            arrayPosicionesLibres.push([filaRandomIA, columnaRandomIA]);
+            arrayPosicionesLibres.push([filaRandomIA, columnaRandomIA]); 
             cambiarBoton(filaRandomIA, columnaRandomIA, 0); // Vaciamos y dejamos libre la casilla
             restarFichaJugador(); // Restamos una ficha para que se quede con 2
 
