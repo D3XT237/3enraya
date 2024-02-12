@@ -212,7 +212,7 @@ function intentarGanar() {
             realizarMovimiento(filaCambiar_IA, columnaCambiar_IA);
             return true;
         } else if (fichasJugadorActual() == 3) { // Si tiene 3 fichas
-            let arrayPosicionesIA_copia = arrayPosicionesIA.map(arr => [...arr]); // Creamos una copia del array de posiciones que tiene la IA
+            let arrayPosicionesIA_copia = [...arrayPosicionesIA]; // Creamos una copia del array de posiciones que tiene la IA
             /* 
             Buscamos los indices de las fichas que NO queremos cambiar. Los eliminamos de la copia para que sólo quede en el
             array la posición que queremos eliminar
@@ -248,7 +248,7 @@ function bloquearJugador() {
             realizarMovimiento(filaCambiar_IA, columnaCambiar_IA);
             return true;
         } else { // Si tiene 3 fichas
-            let arrayPosicionesIA_copia = arrayPosicionesIA.map(arr => [...arr]); // Creamos una copia del array de posiciones que tiene la IA
+            let arrayPosicionesIA_copia = [...arrayPosicionesIA]; // Creamos una copia del array de posiciones que tiene la IA
 
             let indiceAleatorioIA = Math.floor(Math.random() * arrayPosicionesIA_copia.length); //Buscamos una de las 3 posiciones disponibles
             let posicionAleatoriaIA = arrayPosicionesIA_copia[indiceAleatorioIA]; // La seleccionamos
