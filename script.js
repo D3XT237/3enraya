@@ -264,6 +264,9 @@ function bloquearJugador() {
 
                 filaRandomIA = posicionAleatoriaIA[0]; // Asignamos su fila
                 columnaRandomIA = posicionAleatoriaIA[1]; // Asignamos su columna
+                if (arrayPosicionesIA_copia.length == 0){
+                    break;
+                }
             }
             arrayPosicionesIA.splice(indiceAleatorioIA, 1); // Quitamos del array de posiciones de la IA la posición que vamos a eliminar
             arrayPosicionesLibres.push([filaRandomIA, columnaRandomIA]); 
