@@ -64,7 +64,6 @@ Comprueba el número de fichas y llama a la función en consecuencia
 */
 function realizarMovimiento(fila, columna) {
     borrarMensaje();
-    contadorJugador();
     if (numFichasPartida == 2) {
         realizarMovimiento6fichas(fila, columna);
     } else {
@@ -96,6 +95,10 @@ function realizarMovimiento9fichas(fila, columna) {
             pararContadores();
         } else {
             cambiarTurno();
+            contadorJugador();
+            if (modoJuegoPartida == 3) {
+                cambiarMensajeJugador("TURNO JUGADOR " + jugadorActual, 'info');
+            }
             if (jugadorActual == 2) {
                 switch (modoJuegoPartida) {
                     case 1:
@@ -135,6 +138,10 @@ function realizarMovimiento6fichas(fila, columna) {
                 tablaContadorVictorias();
             } else {
                 cambiarTurno();
+                contadorJugador();
+                if (modoJuegoPartida == 3) {
+                    cambiarMensajeJugador("TURNO JUGADOR " + jugadorActual, 'info');
+                }
                 if (jugadorActual == 2) {
                     switch (modoJuegoPartida) {
                         case 1:
@@ -199,14 +206,14 @@ function vsAleatorio() {
 function vsIA() {
     bloquearBotones(); // Primero bloqueamos los botones
 
-    setTimeout(function() {
+    setTimeout(function () {
         desbloquearBotones();
         if (intentarGanar()) {
             // La IA intenta ganar si puede
-            return; 
+            return;
         } else if (bloquearJugador()) {
             // La IA bloquea si el otro jugador puede ganar
-            return; 
+            return;
         } else {
             // Si no hay ninguna jugada estratégica, la IA hace una jugada aleatoria
             vsAleatorio();
@@ -244,7 +251,7 @@ function intentarGanar() {
             arrayPosicionesLibres.push([fila_casillaQuitarIA, columna_casillaQuitarIA]);
 
             restarFichaJugador(); // Restamos una ficha para que se quede con 2
-            
+
             intentarGanar();
         }
     }
@@ -268,7 +275,7 @@ function bloquearJugador() {
             columnaRandomIA = posicionAleatoriaIA[1]; // Asignamos su columna
 
             while (comprobarDescubierto(filaRandomIA, columnaRandomIA)) {
-                if (arrayPosicionesIA_copia.length == 1){
+                if (arrayPosicionesIA_copia.length == 1) {
                     break;
                 }
                 let indice = arrayPosicionesIA_copia.findIndex(arr => arr[0] === filaRandomIA && arr[1] === columnaRandomIA);
@@ -281,7 +288,7 @@ function bloquearJugador() {
             }
             let indiceQuitar = arrayPosicionesIA.findIndex(arr => arr[0] === filaRandomIA && arr[1] === columnaRandomIA);
             arrayPosicionesIA.splice(indiceQuitar, 1); // Quitamos del array de posiciones de la IA la posición que vamos a eliminar
-            arrayPosicionesLibres.push([filaRandomIA, columnaRandomIA]); 
+            arrayPosicionesLibres.push([filaRandomIA, columnaRandomIA]);
             cambiarBoton(filaRandomIA, columnaRandomIA, 0); // Vaciamos y dejamos libre la casilla
             restarFichaJugador(); // Restamos una ficha para que se quede con 2
 
@@ -514,6 +521,9 @@ function reiniciarJuego() {
     columnaNoCambiar1 = "";
     filaNoCambiar2 = "";
     columnaNoCambiar2 = "";
+    if (modoJuegoPartida == 3) {
+        cambiarMensajeJugador("TURNO JUGADOR " + jugadorActual, 'info');
+    }
 }
 
 /*
@@ -674,6 +684,10 @@ function cambiarMensajeJugador(texto, tipo) {
         </div>
         <div class="error__title">` + texto + `</div>
     </div>`;
+    if (tipo == 'info') {
+        document.getElementById('turnoJugador').innerHTML = mensaje;
+        return;
+    }
     document.getElementById('textoMensaje').innerHTML = mensaje;
 }
 
