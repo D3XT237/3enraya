@@ -234,15 +234,7 @@ function intentarGanar() {
 
             restarFichaJugador(); // Restamos una ficha para que se quede con 2
 
-            if (comprobarJugadaGanadora(2)) {
-                eliminarPosicionLibre(filaCambiar_IA, columnaCambiar_IA);
-                cambiarBoton(filaCambiar_IA, columnaCambiar_IA, 2);
-                cambiarMensajeJugador('Has perdido contra la IA', 'error');
-                bloquearBotones();
-                sumarGanador();
-                tablaContadorVictorias();
-                return true;
-            }
+            intentarGanar();
         }
     }
     // Si no se encuentra ninguna situación para ganar, devuelve false
@@ -269,19 +261,16 @@ function bloquearJugador() {
                 arrayPosicionesIA_copia.splice(indice, 1);
                 indiceAleatorioIA = Math.floor(Math.random() * arrayPosicionesIA_copia.length); //Buscamos una de las 3 posiciones disponibles
                 posicionAleatoriaIA = arrayPosicionesIA_copia[indiceAleatorioIA]; // La seleccionamos
-                
-            columnaRandomIA = posicionAleatoriaIA[1]; // Asignamos su columna
-            filaRandomIA = posicionAleatoriaIA[0];
+
+                filaRandomIA = posicionAleatoriaIA[0]; // Asignamos su fila
+                columnaRandomIA = posicionAleatoriaIA[1]; // Asignamos su columna
             }
             arrayPosicionesIA.splice(indiceAleatorioIA, 1); // Quitamos del array de posiciones de la IA la posición que vamos a eliminar
-            arrayPosicionesLibres.push([filaRandomIA, columnaRandomIA]);
+            arrayPosicionesLibres.push([filaRandomIA, columnaRandomIA]); 
             cambiarBoton(filaRandomIA, columnaRandomIA, 0); // Vaciamos y dejamos libre la casilla
-            anteriorPosicionIA = document.getElementById("fila" + filaRandomIA + "columna" + columnaRandomIA).id; // Guardamos la posición anterior
             restarFichaJugador(); // Restamos una ficha para que se quede con 2
 
-            if (comprobarJugadaGanadora(1)) {
-
-            }
+            bloquearJugador();
         }
     }
     // Si no se encuentra ninguna situación para bloquear, devuelve false
@@ -757,15 +746,4 @@ function reiniciarStatsPartidas() {
     perdidas1 = 0;
     perdidas2 = 0;
     tablaContadorVictorias();
-}
-
-function mostrarStats() {
-    document.getElementById('fichasJug1').innerHTML = 'Fichas jugador 1: ' + fichasJugador1;
-    document.getElementById('fichasJug2').innerHTML = 'Fichas jugador 2: ' + fichasJugador2;
-    document.getElementById('posicionesLibres').innerHTML = 'Posiciones libres: ' + arrayPosicionesLibres.join(', ');
-    document.getElementById('posicionesLibresIA').innerHTML = 'Posiciones IA: ' + arrayPosicionesIA.join(', ');
-    document.getElementById('anteriorPosicion').innerHTML = 'Anterior posicion: ' + anteriorPosicion;
-    document.getElementById('anteriorPosicionIA').innerHTML = 'Anterior posicion IA:' + anteriorPosicionIA;
-    document.getElementById('arrayJuego').innerHTML = 'Array Juego: ' + arrayJuego.join(' || ');
-
 }
