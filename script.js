@@ -233,7 +233,7 @@ function intentarGanar() {
             arrayPosicionesLibres.push([fila_casillaQuitarIA, columna_casillaQuitarIA]);
 
             restarFichaJugador(); // Restamos una ficha para que se quede con 2
-
+            
             intentarGanar();
         }
     }
@@ -491,14 +491,14 @@ function reiniciarJuego() {
     fichasJugador2 = 0;
     arrayPosicionesLibres = [[0, 0], [0, 1], [0, 2], [1, 0], [1, 1], [1, 2], [2, 0], [2, 1], [2, 2]];
     arrayPosicionesIA = [];
-    anteriorPosicion = null;
-    anteriorPosicionIA = null;
-    filaCambiar_IA = null;
-    columnaCambiar_IA = null;
-    filaNoCambiar1 = null;
-    columnaNoCambiar1 = null;
-    filaNoCambiar2 = null;
-    columnaNoCambiar2 = null;
+    anteriorPosicion = "";
+    anteriorPosicionIA = "";
+    filaCambiar_IA = "";
+    columnaCambiar_IA = "";
+    filaNoCambiar1 = "";
+    columnaNoCambiar1 = "";
+    filaNoCambiar2 = "";
+    columnaNoCambiar2 = "";
 }
 
 /*
