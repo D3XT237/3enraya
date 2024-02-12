@@ -224,11 +224,12 @@ button {
 
 #contadorVictorias {
     display: flex;
+    flex-direction: column;
     width: 33%;
     height: auto;
     justify-content: center;
     align-items: center;
-    margin-right: 10vh;
+    margin-right: 5vh;
 }
 
 #tablaVictorias {
@@ -236,13 +237,7 @@ button {
     width: 100%;
     font-family: Arial, sans-serif;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-#tablaVictorias th {
-    background-color: #4CAF50;
-    color: white;
-    padding: 12px;
-    text-align: center;
+    margin-bottom: 6vh;
 }
 
 #tablaVictorias td {

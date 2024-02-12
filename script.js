@@ -721,10 +721,15 @@ function tablaContadorVictorias() {
     } else {
         jug2 = "Jugador 2";
     }
-    let tablaContador = "<table id='tablaVictorias'><thead><tr><td colspan='3'><b>JUGADOR 1</b></td><td colspan='3'><b>" + jug2.toUpperCase() + "</b></td></tr></thead>";
-    tablaContador += "<tr><td>Ganadas</td><td>Empatadas</td><td>Perdidas</td><td>Ganadas</td><td>Empatadas</td><td>Perdidas</td></tr>";
-    tablaContador += "<tr><td>" + ganadas1 + "</td><td>" + empatadas1 + "</td><td>" + perdidas1 + "</td><td>" + ganadas2 + "</td><td>" + empatadas2 + "</td><td>" + perdidas2 + "</td></tr>";
-    tablaContador += "</table>"
+    let tablaContador = "<table id='tablaVictorias'><thead><tr><td colspan='3'><b>JUGADOR 1</b></td></tr></thead>";
+    tablaContador += "<tr><td>Ganadas</td><td>Empatadas</td><td>Perdidas</td></tr>";
+    tablaContador += "<tr><td>" + ganadas1 + "</td><td>" + empatadas1 + "</td><td>" + perdidas1 + "</td></tr>";
+    tablaContador += "</table>";
+    tablaContador += "<table id='tablaVictorias'><thead><tr><td colspan='3'><b>" + jug2.toUpperCase() + "</b></td></tr></thead>";
+    tablaContador += "<tr><td>Ganadas</td><td>Empatadas</td><td>Perdidas</td></tr>";
+    tablaContador += "<tr><td>" + ganadas2 + "</td><td>" + empatadas2 + "</td><td>" + perdidas2 + "</td></tr>";
+    tablaContador += "</table>";
+
 
     document.getElementById('contadorVictorias').innerHTML = tablaContador;
 }
