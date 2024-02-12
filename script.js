@@ -197,14 +197,25 @@ function vsAleatorio() {
 }
 
 function vsIA() {
-    if (intentarGanar()) {
-        return; // La IA intenta ganar si puede
-    } else if (bloquearJugador()) {
-        return; // La IA bloquea si el otro jugador puede ganar
-    } else {
-        vsAleatorio();
-    }
+    bloquearBotones(); // Primero bloqueamos los botones
+
+    setTimeout(function() {
+        desbloquearBotones();
+        if (intentarGanar()) {
+            // La IA intenta ganar si puede
+            return; 
+        } else if (bloquearJugador()) {
+            // La IA bloquea si el otro jugador puede ganar
+            return; 
+        } else {
+            // Si no hay ninguna jugada estratégica, la IA hace una jugada aleatoria
+            vsAleatorio();
+            return;
+        }
+    }, 500); // Esperamos un segundo antes de ejecutar la lógica de la IA
 }
+
+
 
 function intentarGanar() {
     if (comprobarJugadaGanadora(2)) { // Comprueba si la IA tiene jugada ganadora
@@ -257,18 +268,19 @@ function bloquearJugador() {
             columnaRandomIA = posicionAleatoriaIA[1]; // Asignamos su columna
 
             while (comprobarDescubierto(filaRandomIA, columnaRandomIA)) {
+                if (arrayPosicionesIA_copia.length == 1){
+                    break;
+                }
                 let indice = arrayPosicionesIA_copia.findIndex(arr => arr[0] === filaRandomIA && arr[1] === columnaRandomIA);
                 arrayPosicionesIA_copia.splice(indice, 1);
-                indiceAleatorioIA = Math.floor(Math.random() * arrayPosicionesIA_copia.length); //Buscamos una de las 3 posiciones disponibles
+                indiceAleatorioIA = Math.floor(Math.random() * arrayPosicionesIA_copia.length); //Buscamos una de las posiciones restantes
                 posicionAleatoriaIA = arrayPosicionesIA_copia[indiceAleatorioIA]; // La seleccionamos
 
                 filaRandomIA = posicionAleatoriaIA[0]; // Asignamos su fila
                 columnaRandomIA = posicionAleatoriaIA[1]; // Asignamos su columna
-                if (arrayPosicionesIA_copia.length == 0){
-                    break;
-                }
             }
-            arrayPosicionesIA.splice(indiceAleatorioIA, 1); // Quitamos del array de posiciones de la IA la posición que vamos a eliminar
+            let indiceQuitar = arrayPosicionesIA.findIndex(arr => arr[0] === filaRandomIA && arr[1] === columnaRandomIA);
+            arrayPosicionesIA.splice(indiceQuitar, 1); // Quitamos del array de posiciones de la IA la posición que vamos a eliminar
             arrayPosicionesLibres.push([filaRandomIA, columnaRandomIA]); 
             cambiarBoton(filaRandomIA, columnaRandomIA, 0); // Vaciamos y dejamos libre la casilla
             restarFichaJugador(); // Restamos una ficha para que se quede con 2
@@ -674,6 +686,13 @@ function bloquearBotones() {
     let botones = document.querySelectorAll('.botonTablero');
     botones.forEach(boton => {
         boton.disabled = true;
+    });
+}
+
+function desbloquearBotones() {
+    let botones = document.querySelectorAll('.botonTablero');
+    botones.forEach(boton => {
+        boton.disabled = false;
     });
 }
 
