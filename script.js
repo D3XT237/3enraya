@@ -531,6 +531,7 @@ Cambia el color del botón seleccionado y asigna el número de fichas que indica
 */
 function elegirNumFichas(numFichas, id) {
     borrarMensaje();
+    document.getElementById('turnoJugador').innerHTML = "";
     cambiarColorBotonFichas(id);
     numFichasPartida = numFichas;
 }
@@ -540,6 +541,7 @@ Cambia el color del botón seleccionado y asigna modo de juego que indica el bot
 */
 function elegirModoJuego(modoJuego, id) {
     borrarMensaje();
+    document.getElementById('turnoJugador').innerHTML = "";
     cambiarColorBotonModo(id);
     modoJuegoPartida = modoJuego;
     pararContadores();
