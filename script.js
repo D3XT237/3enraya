@@ -75,6 +75,9 @@ function realizarMovimiento(fila, columna) {
     } else {
         realizarMovimiento9fichas(fila, columna);
     }
+    mostrarStats(); /* Esta función no hace nada. Ni siquiera existe. La usaba para ir probando cosas y ver los resultados,
+    pero por algun motivo si la quito, en el modo 6 fichas vsIA, cuando la IA tiene que quitar una ficha y volver a jugar, se 
+    vuelve loca, asi que lo dejo*/
 }
 /*
 Hace un movimiento en la casilla con la fila y columna que recibe como parámetros
@@ -95,6 +98,7 @@ function realizarMovimiento9fichas(fila, columna) {
             sumarEmpate(); // +1 a empate a ambos jugadores
             bloquearBotones(); // Bloquea
             tablaContadorVictorias(); // Muestra tabla victorias modificada
+            pararContadores();
         } else {
             cambiarTurno(); // Cambia el turno del jugador
             contadorJugador(); // Reinicia el contador de 30s para jugar ficha
